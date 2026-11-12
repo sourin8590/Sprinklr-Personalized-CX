@@ -14,18 +14,25 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              required: [client_id, client_secret]
-              properties:
-                client_id:
-                  type: string
-                client_secret:
-                  type: string
+              $ref: '#/components/schemas/TokenRequest'
       responses:
         '200':
           description: Token issued
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessResponse'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/TokenData'
         '400':
           description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
   /customers/lookup:
     get:
       summary: Look up a customer by MSISDN
@@ -38,6 +45,21 @@ paths:
       responses:
         '200':
           description: Customer lookup result
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessResponse'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/CustomerLookupData'
+        '404':
+          description: Customer not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
   /customers/{id}/plan-change:
     post:
       summary: Change a customer's plan
@@ -57,20 +79,25 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              required: [targetPlanCode, consent, channel]
-              properties:
-                targetPlanCode:
-                  type: string
-                consent:
-                  type: boolean
-                channel:
-                  type: string
+              $ref: '#/components/schemas/PlanChangeRequest'
       responses:
         '200':
           description: Plan change successful
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessResponse'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/PlanChangeData'
         '409':
           description: Duplicate idempotency key or consent not granted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
   /identity/otp/send:
     post:
       summary: Send a one-time password
@@ -79,16 +106,19 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              required: [customerId, channel]
-              properties:
-                customerId:
-                  type: string
-                channel:
-                  type: string
+              $ref: '#/components/schemas/OtpSendRequest'
       responses:
         '200':
           description: OTP sent
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessResponse'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/OtpSendData'
   /identity/otp/validate:
     post:
       summary: Validate a one-time password
@@ -97,16 +127,19 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              required: [customerId, code]
-              properties:
-                customerId:
-                  type: string
-                code:
-                  type: string
+              $ref: '#/components/schemas/OtpValidateRequest'
       responses:
         '200':
           description: OTP validated
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessResponse'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/OtpValidateData'
   /identity/verify:
     post:
       summary: Verify a customer by method
@@ -115,18 +148,19 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              required: [customerId, method, value]
-              properties:
-                customerId:
-                  type: string
-                method:
-                  type: string
-                value:
-                  type: string
+              $ref: '#/components/schemas/IdentityVerifyRequest'
       responses:
         '200':
           description: Verification result
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessResponse'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/IdentityVerifyData'
   /ivr/context:
     get:
       summary: Get IVR context for a phone number
@@ -147,29 +181,40 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              required: [customerId, reason, simType, deliveryAddress]
-              properties:
-                customerId:
-                  type: string
-                reason:
-                  type: string
-                simType:
-                  type: string
-                deliveryAddress:
-                  type: object
+              $ref: '#/components/schemas/SimReplacementRequest'
       responses:
         '200':
           description: SIM replacement request created
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessResponse'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/SimReplacementData'
   /segments:
     post:
       summary: Create a campaign segment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SegmentCreateRequest'
       responses:
         '201':
           description: Segment created
   /campaigns:
     post:
       summary: Create an outbound campaign
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CampaignCreateRequest'
       responses:
         '201':
           description: Campaign created
@@ -182,10 +227,251 @@ paths:
   /cases:
     post:
       summary: Create a service case
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CaseCreateRequest'
       responses:
         '201':
           description: Case created
 components:
+  schemas:
+    SuccessResponse:
+      type: object
+      required: [success, data, requestId]
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          description: Response payload
+        requestId:
+          type: string
+          format: uuid
+    ErrorResponse:
+      type: object
+      required: [success, error, requestId]
+      properties:
+        success:
+          type: boolean
+          example: false
+        error:
+          $ref: '#/components/schemas/ApiError'
+        requestId:
+          type: string
+          format: uuid
+    ApiError:
+      type: object
+      required: [code, message, details]
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+    ErrorDetail:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+    TokenRequest:
+      type: object
+      required: [client_id, client_secret]
+      properties:
+        client_id:
+          type: string
+          example: sprinklr-demo-client
+        client_secret:
+          type: string
+          format: password
+    TokenData:
+      type: object
+      required: [token]
+      properties:
+        token:
+          type: string
+    CustomerLookupData:
+      type: object
+      required: [id, name, tier, msisdn]
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        tier:
+          type: string
+          enum: [STANDARD, PREMIUM]
+        msisdn:
+          type: string
+          description: Masked phone number
+    PlanChangeRequest:
+      type: object
+      required: [targetPlanCode, consent, channel]
+      properties:
+        targetPlanCode:
+          type: string
+        consent:
+          type: boolean
+        channel:
+          type: string
+          enum: [IVR, CHAT, AGENT, WHATSAPP, SMS]
+    PlanChangeData:
+      type: object
+      required: [planChangeId, toPlan]
+      properties:
+        planChangeId:
+          type: string
+        toPlan:
+          type: string
+    OtpSendRequest:
+      type: object
+      required: [customerId]
+      properties:
+        customerId:
+          type: string
+        channel:
+          type: string
+          enum: [SMS, EMAIL, VOICE]
+          default: SMS
+    OtpSendData:
+      type: object
+      required: [customerId, channel, expiresAt, otpCode]
+      properties:
+        customerId:
+          type: string
+        channel:
+          type: string
+        expiresAt:
+          type: string
+          format: date-time
+        otpCode:
+          type: string
+          description: Demo OTP when MOCK_OTP is enabled; otherwise a sent status.
+    OtpValidateRequest:
+      type: object
+      required: [customerId, code]
+      properties:
+        customerId:
+          type: string
+        code:
+          type: string
+    OtpValidateData:
+      type: object
+      required: [valid, verified]
+      properties:
+        valid:
+          type: boolean
+        verified:
+          type: boolean
+    IdentityVerifyRequest:
+      type: object
+      required: [customerId, method, value]
+      properties:
+        customerId:
+          type: string
+        method:
+          type: string
+          enum: [OTP, DOB, FISCAL_CODE]
+        value:
+          oneOf:
+            - type: string
+            - type: number
+    IdentityVerifyData:
+      type: object
+      required: [result]
+      properties:
+        result:
+          type: string
+          enum: [PASS, FAIL]
+    DeliveryAddress:
+      type: object
+      required: [street, city, postalCode, province]
+      properties:
+        street:
+          type: string
+        city:
+          type: string
+        postalCode:
+          type: string
+        province:
+          type: string
+    SimReplacementRequest:
+      type: object
+      required: [customerId, reason, simType]
+      properties:
+        customerId:
+          type: string
+        reason:
+          type: string
+          enum: [LOST, DAMAGED, STOLEN, UPGRADE]
+        simType:
+          type: string
+          enum: [PHYSICAL, ESIM]
+        deliveryAddress:
+          allOf:
+            - $ref: '#/components/schemas/DeliveryAddress'
+          description: Required when simType is PHYSICAL.
+    SimReplacementData:
+      type: object
+      properties:
+        requestCode:
+          type: string
+        status:
+          type: string
+        simType:
+          type: string
+          enum: [PHYSICAL, ESIM]
+    SegmentCreateRequest:
+      type: object
+      required: [name, ruleType, rule]
+      properties:
+        name:
+          type: string
+        ruleType:
+          type: string
+          enum: [OVERDUE, UPGRADE_ELIGIBLE, CUSTOM]
+        rule:
+          type: object
+          additionalProperties: true
+    CampaignCreateRequest:
+      type: object
+      required: [name, channel, segmentId, template]
+      properties:
+        name:
+          type: string
+        channel:
+          type: string
+          enum: [SMS, VOICE, WHATSAPP]
+        segmentId:
+          type: string
+        template:
+          type: string
+        scheduledAt:
+          type: string
+          format: date-time
+    CaseCreateRequest:
+      type: object
+      required: [customerId, channel, subject]
+      properties:
+        customerId:
+          type: string
+        channel:
+          type: string
+          enum: [VOICE, CHAT, EMAIL, SOCIAL, SMS, WHATSAPP]
+        subject:
+          type: string
+        description:
+          type: string
+        priority:
+          type: string
+          enum: [LOW, MEDIUM, HIGH, URGENT]
   securitySchemes:
     bearerAuth:
       type: http
