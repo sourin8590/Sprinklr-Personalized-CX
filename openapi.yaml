@@ -1,0 +1,194 @@
+openapi: 3.0.0
+info:
+  title: Windtre Mock Backend API
+  version: 1.0.0
+  description: Mock WINDTRE telecom API for Sprinklr training and demo environments.
+servers:
+  - url: http://localhost:3000/api/v1
+paths:
+  /auth/token:
+    post:
+      summary: Get an API token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [client_id, client_secret]
+              properties:
+                client_id:
+                  type: string
+                client_secret:
+                  type: string
+      responses:
+        '200':
+          description: Token issued
+        '400':
+          description: Validation error
+  /customers/lookup:
+    get:
+      summary: Look up a customer by MSISDN
+      parameters:
+        - in: query
+          name: msisdn
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Customer lookup result
+  /customers/{id}/plan-change:
+    post:
+      summary: Change a customer's plan
+      parameters:
+        - in: header
+          name: Idempotency-Key
+          required: false
+          schema:
+            type: string
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [targetPlanCode, consent, channel]
+              properties:
+                targetPlanCode:
+                  type: string
+                consent:
+                  type: boolean
+                channel:
+                  type: string
+      responses:
+        '200':
+          description: Plan change successful
+        '409':
+          description: Duplicate idempotency key or consent not granted
+  /identity/otp/send:
+    post:
+      summary: Send a one-time password
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [customerId, channel]
+              properties:
+                customerId:
+                  type: string
+                channel:
+                  type: string
+      responses:
+        '200':
+          description: OTP sent
+  /identity/otp/validate:
+    post:
+      summary: Validate a one-time password
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [customerId, code]
+              properties:
+                customerId:
+                  type: string
+                code:
+                  type: string
+      responses:
+        '200':
+          description: OTP validated
+  /identity/verify:
+    post:
+      summary: Verify a customer by method
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [customerId, method, value]
+              properties:
+                customerId:
+                  type: string
+                method:
+                  type: string
+                value:
+                  type: string
+      responses:
+        '200':
+          description: Verification result
+  /ivr/context:
+    get:
+      summary: Get IVR context for a phone number
+      parameters:
+        - in: query
+          name: ani
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: IVR context payload
+  /sim-replacement:
+    post:
+      summary: Create a SIM replacement request
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [customerId, reason, simType, deliveryAddress]
+              properties:
+                customerId:
+                  type: string
+                reason:
+                  type: string
+                simType:
+                  type: string
+                deliveryAddress:
+                  type: object
+      responses:
+        '200':
+          description: SIM replacement request created
+  /segments:
+    post:
+      summary: Create a campaign segment
+      responses:
+        '201':
+          description: Segment created
+  /campaigns:
+    post:
+      summary: Create an outbound campaign
+      responses:
+        '201':
+          description: Campaign created
+  /campaigns/{id}/launch:
+    post:
+      summary: Launch a campaign
+      responses:
+        '200':
+          description: Campaign launched
+  /cases:
+    post:
+      summary: Create a service case
+      responses:
+        '201':
+          description: Case created
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+security:
+  - bearerAuth: []

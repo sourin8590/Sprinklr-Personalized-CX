@@ -1,0 +1,824 @@
+{
+  "info": {
+    "name": "WINDTRE Mock Backend",
+    "description": "Complete mock telecom API collection for Sprinklr training and demos.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "System & Auth",
+      "item": [
+        {
+          "name": "Health check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/health",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["health"]
+            }
+          }
+        },
+        {
+          "name": "Get auth token",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"client_id\": \"sprinklr-demo-client\",\n  \"client_secret\": \"windtre-demo-api-key-123\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/v1/auth/token",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "v1", "auth", "token"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Plans & Customers",
+      "item": [
+        {
+          "name": "List plans",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/api/v1/plans",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "v1", "plans"]
+            }
+          }
+        },
+        {
+          "name": "Lookup customer by MSISDN",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/api/v1/customers/lookup?msisdn=3331239821",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "v1", "customers", "lookup"],
+              "query": [
+                { "key": "msisdn", "value": "3331239821" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get customer profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/api/v1/customers/{{customerId}}/profile",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "v1", "customers", "{{customerId}}", "profile"]
+            }
+          }
+        },
+        {
+          "name": "Get customer plan",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/api/v1/customers/{{customerId}}/plan",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "v1", "customers", "{{customerId}}", "plan"]
+            }
+          }
+        },
+        {
+          "name": "Get customer usage",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/api/v1/customers/{{customerId}}/usage",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "v1", "customers", "{{customerId}}", "usage"]
+            }
+          }
+        },
+        {
+          "name": "Get latest bill",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/api/v1/customers/{{customerId}}/billing/latest",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "v1", "customers", "{{customerId}}", "billing", "latest"]
+            }
+          }
+        },
+        {
+          "name": "Get customer bills",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/api/v1/customers/{{customerId}}/bills",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "v1", "customers", "{{customerId}}", "bills"]
+            }
+          }
+        },
+        {
+          "name": "Get customer 360",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/api/v1/customers/{{customerId}}/360",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "v1", "customers", "{{customerId}}", "360"]
+            }
+          }
+        },
+        {
+          "name": "Get offers",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/api/v1/customers/{{customerId}}/offers",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "v1", "customers", "{{customerId}}", "offers"]
+            }
+          }
+        },
+        {
+          "name": "Get next best action",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/api/v1/customers/{{customerId}}/next-best-action",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "v1", "customers", "{{customerId}}", "next-best-action"]
+            }
+          }
+        },
+        {
+          "name": "Change plan",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Idempotency-Key", "value": "plan-change-01" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"targetPlanCode\": \"5G_MAX\",\n  \"consent\": true,\n  \"channel\": \"IVR\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/v1/customers/{{customerId}}/plan-change",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "v1", "customers", "{{customerId}}", "plan-change"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Billing",
+      "item": [
+        {
+          "name": "Create payment link",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"billId\": \"{{billId}}\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/v1/payments/link",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "v1", "payments", "link"]
+            }
+          }
+        },
+        {
+          "name": "Set autopay",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"enabled\": true\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/v1/customers/{{customerId}}/autopay",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "v1", "customers", "{{customerId}}", "autopay"]
+            }
+          }
+        },
+        {
+          "name": "Get autopay",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/api/v1/customers/{{customerId}}/autopay",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "v1", "customers", "{{customerId}}", "autopay"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Identity & IVR",
+      "item": [
+        {
+          "name": "Send OTP",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customerId\": \"{{customerId}}\",\n  \"channel\": \"SMS\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/v1/identity/otp/send",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "v1", "identity", "otp", "send"]
+            }
+          }
+        },
+        {
+          "name": "Validate OTP",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customerId\": \"{{customerId}}\",\n  \"code\": \"123456\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/v1/identity/otp/validate",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "v1", "identity", "otp", "validate"]
+            }
+          }
+        },
+        {
+          "name": "Verify identity",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customerId\": \"{{customerId}}\",\n  \"method\": \"OTP\",\n  \"value\": \"OTP\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/v1/identity/verify",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "v1", "identity", "verify"]
+            }
+          }
+        },
+        {
+          "name": "Get IVR context",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/api/v1/ivr/context?ani=3331239821",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "v1", "ivr", "context"],
+              "query": [
+                { "key": "ani", "value": "3331239821" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Chatbot fulfillment",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"intent\": \"CHECK_BILL\",\n  \"customerId\": \"{{customerId}}\",\n  \"params\": {\n    \"billStatus\": \"OVERDUE\"\n  }\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/v1/chatbot/fulfillment",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "v1", "chatbot", "fulfillment"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "SIM & Service",
+      "item": [
+        {
+          "name": "Get customer SIM",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/api/v1/customers/{{customerId}}/sim",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "v1", "customers", "{{customerId}}", "sim"]
+            }
+          }
+        },
+        {
+          "name": "Check SIM replacement eligibility",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/api/v1/customers/{{customerId}}/sim-replacement/eligibility",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "v1", "customers", "{{customerId}}", "sim-replacement", "eligibility"]
+            }
+          }
+        },
+        {
+          "name": "Request SIM replacement",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Idempotency-Key", "value": "sim-replacement-01" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customerId\": \"{{customerId}}\",\n  \"reason\": \"LOST\",\n  \"simType\": \"PHYSICAL\",\n  \"deliveryAddress\": {\n    \"street\": \"Via Roma 45\",\n    \"city\": \"Milan\",\n    \"postalCode\": \"20100\",\n    \"province\": \"MI\"\n  }\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/v1/sim-replacement",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "v1", "sim-replacement"]
+            }
+          }
+        },
+        {
+          "name": "Fetch SIM replacement by request code",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/api/v1/sim-replacement/{{requestCode}}",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "v1", "sim-replacement", "{{requestCode}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Cases & Interactions",
+      "item": [
+        {
+          "name": "Create case",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customerId\": \"{{customerId}}\",\n  \"channel\": \"VOICE\",\n  \"subject\": \"Billing question\",\n  \"description\": \"Need billing summary.\",\n  \"priority\": \"HIGH\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/v1/cases",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "v1", "cases"]
+            }
+          }
+        },
+        {
+          "name": "List cases",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/api/v1/cases",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "v1", "cases"]
+            }
+          }
+        },
+        {
+          "name": "Get case by id",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/api/v1/cases/{{caseId}}",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "v1", "cases", "{{caseId}}"]
+            }
+          }
+        },
+        {
+          "name": "Update case",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"IN_PROGRESS\",\n  \"priority\": \"MEDIUM\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/v1/cases/{{caseId}}",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "v1", "cases", "{{caseId}}"]
+            }
+          }
+        },
+        {
+          "name": "Add case note",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"text\": \"Customer confirmed billing summary is needed.\",\n  \"author\": \"agent@sprinklr.local\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/v1/cases/{{caseId}}/notes",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "v1", "cases", "{{caseId}}", "notes"]
+            }
+          }
+        },
+        {
+          "name": "Get case SLA",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/api/v1/cases/{{caseId}}/sla",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "v1", "cases", "{{caseId}}", "sla"]
+            }
+          }
+        },
+        {
+          "name": "List customer interactions",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/api/v1/customers/{{customerId}}/interactions",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "v1", "customers", "{{customerId}}", "interactions"]
+            }
+          }
+        },
+        {
+          "name": "Create interaction",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customerId\": \"{{customerId}}\",\n  \"channel\": \"CHAT\",\n  \"direction\": \"INBOUND\",\n  \"summary\": \"Customer asked about plan options.\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/v1/interactions",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "v1", "interactions"]
+            }
+          }
+        },
+        {
+          "name": "Escalate conversation",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"conversationId\": \"conv-102\",\n  \"reason\": \"VIP customer\",\n  \"targetTeam\": \"WIRELESS_ESCALATIONS\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/v1/conversations/escalate",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "v1", "conversations", "escalate"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Outbound Campaigns",
+      "item": [
+        {
+          "name": "Create segment",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"VIP_BILLING\",\n  \"ruleType\": \"OVERDUE\",\n  \"rule\": {\n    \"overdue\": true\n  }\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/v1/segments",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "v1", "segments"]
+            }
+          }
+        },
+        {
+          "name": "Get segment members",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/api/v1/segments/{{segmentId}}/members",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "v1", "segments", "{{segmentId}}", "members"]
+            }
+          }
+        },
+        {
+          "name": "Create campaign",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Late bill reminder\",\n  \"channel\": \"SMS\",\n  \"segmentId\": \"{{segmentId}}\",\n  \"template\": \"Hi {{name}}, your bill is due.\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/v1/campaigns",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "v1", "campaigns"]
+            }
+          }
+        },
+        {
+          "name": "Launch campaign",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/api/v1/campaigns/{{campaignId}}/launch",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "v1", "campaigns", "{{campaignId}}", "launch"]
+            }
+          }
+        },
+        {
+          "name": "Get campaign messages",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/api/v1/campaigns/{{campaignId}}/messages",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "v1", "campaigns", "{{campaignId}}", "messages"]
+            }
+          }
+        },
+        {
+          "name": "Send one-off message",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customerId\": \"{{customerId}}\",\n  \"channel\": \"SMS\",\n  \"message\": \"Your bill has been updated.\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/v1/messages/send",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "v1", "messages", "send"]
+            }
+          }
+        },
+        {
+          "name": "Delivery webhook",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"campaignId\": \"{{campaignId}}\",\n  \"messageId\": \"msg-001\",\n  \"status\": \"DELIVERED\",\n  \"recipient\": \"3331239821\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/v1/webhooks/delivery",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "v1", "webhooks", "delivery"]
+            }
+          }
+        },
+        {
+          "name": "Response webhook",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"campaignId\": \"{{campaignId}}\",\n  \"messageId\": \"msg-001\",\n  \"response\": \"STOP\",\n  \"recipient\": \"3331239821\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/v1/webhooks/response",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "v1", "webhooks", "response"]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    { "key": "token", "value": "" },
+    { "key": "customerId", "value": "" },
+    { "key": "billId", "value": "" },
+    { "key": "caseId", "value": "" },
+    { "key": "segmentId", "value": "" },
+    { "key": "campaignId", "value": "" },
+    { "key": "requestCode", "value": "" },
+    { "key": "msisdn", "value": "3331239821" }
+  ]
+}
