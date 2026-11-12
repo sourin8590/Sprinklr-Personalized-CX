@@ -26,10 +26,6 @@ const systemRoutes = require('./routes/systemRoutes');
 
 const app = express();
 
-connectDB().catch((error) => {
-  console.error('App boot DB connection failed:', error.message);
-});
-
 const swaggerDocument = fs.existsSync(path.join(__dirname, '../openapi.yaml'))
   ? require('yaml').parse(fs.readFileSync(path.join(__dirname, '../openapi.yaml'), 'utf8'))
   : { openapi: '3.0.0', info: { title: 'Windtre Mock API', version: '1.0.0' } };
@@ -65,6 +61,15 @@ app.get('/health', (req, res) => {
 });
 
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+app.use('/api', async (req, res, next) => {
+  try {
+    await connectDB();
+    next();
+  } catch (error) {
+    next(error);
+  }
+});
 
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1', authenticate);
