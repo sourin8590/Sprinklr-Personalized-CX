@@ -4,7 +4,7 @@ info:
   version: 1.0.0
   description: Mock WINDTRE telecom API for Sprinklr training and demo environments.
 servers:
-  - url: /api/v1
+  - url: https://sprinklr-personalized-cx.vercel.app/api/v1
 paths:
   /auth/token:
     post:
