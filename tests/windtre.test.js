@@ -250,4 +250,19 @@ describe('Windtre mock backend', () => {
     expect(first.status).toBe(200);
     expect(second.status).toBe(429);
   });
+
+  test('Vercel forwarded client IP is accepted by the rate limiter', async () => {
+    const previousVercel = process.env.VERCEL;
+    process.env.VERCEL = '1';
+    jest.resetModules();
+    const vercelApp = require('../src/app');
+    if (previousVercel === undefined) delete process.env.VERCEL;
+    else process.env.VERCEL = previousVercel;
+
+    const response = await request(vercelApp)
+      .get('/docs/')
+      .set('X-Forwarded-For', '203.0.113.10');
+
+    expect(response.status).toBe(200);
+  });
 });

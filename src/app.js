@@ -26,6 +26,10 @@ const systemRoutes = require('./routes/systemRoutes');
 
 const app = express();
 
+if (process.env.VERCEL) {
+  app.set('trust proxy', 1);
+}
+
 const swaggerDocument = fs.existsSync(path.join(__dirname, '../openapi.yaml'))
   ? require('yaml').parse(fs.readFileSync(path.join(__dirname, '../openapi.yaml'), 'utf8'))
   : { openapi: '3.0.0', info: { title: 'Windtre Mock API', version: '1.0.0' } };
