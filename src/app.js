@@ -76,7 +76,6 @@ app.use('/api', async (req, res, next) => {
 });
 
 app.use('/api/v1/auth', authRoutes);
-app.use('/api/v1', authenticate);
 app.use('/api/v1/customers', customerRoutes);
 app.use('/api/v1/plans', planRoutes);
 app.use('/api/v1', billingRoutes);
@@ -86,6 +85,7 @@ app.use('/api/v1', caseRoutes);
 app.use('/api/v1', outboundRoutes);
 app.use('/api/v1', ivrRoutes);
 app.use('/api/v1', systemRoutes);
+app.use('/api/v1', authenticate);
 
 app.use(notFound);
 app.use(errorHandler);
