@@ -60,6 +60,120 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+  /customers/{id}/profile:
+    get:
+      summary: Get a customer profile
+      parameters:
+        - $ref: '#/components/parameters/CustomerId'
+      responses:
+        '200':
+          description: Customer profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericSuccessResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /customers/{id}/plan:
+    get:
+      summary: Get a customer's active plan
+      parameters:
+        - $ref: '#/components/parameters/CustomerId'
+      responses:
+        '200':
+          description: Active plan
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericSuccessResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /customers/{id}/usage:
+    get:
+      summary: Get a customer's latest usage record
+      parameters:
+        - $ref: '#/components/parameters/CustomerId'
+      responses:
+        '200':
+          description: Usage record
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericSuccessResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /customers/{id}/billing/latest:
+    get:
+      summary: Get a customer's latest bill
+      parameters:
+        - $ref: '#/components/parameters/CustomerId'
+      responses:
+        '200':
+          description: Latest bill
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericSuccessResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /customers/{id}/bills:
+    get:
+      summary: List a customer's bills
+      parameters:
+        - $ref: '#/components/parameters/CustomerId'
+        - in: query
+          name: status
+          required: false
+          schema:
+            type: string
+            enum: [DUE, OVERDUE, PAID]
+      responses:
+        '200':
+          description: Customer bills
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericSuccessResponse'
+  /customers/{id}/360:
+    get:
+      summary: Get a customer's 360-degree view
+      parameters:
+        - $ref: '#/components/parameters/CustomerId'
+      responses:
+        '200':
+          description: Combined customer, plan, usage, bill, case, and interaction data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericSuccessResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /customers/{id}/offers:
+    get:
+      summary: List offers available to a customer
+      parameters:
+        - $ref: '#/components/parameters/CustomerId'
+      responses:
+        '200':
+          description: Eligible offers
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericSuccessResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /customers/{id}/next-best-action:
+    get:
+      summary: Get a customer's recommended next action
+      parameters:
+        - $ref: '#/components/parameters/CustomerId'
+      responses:
+        '200':
+          description: Recommended action
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericSuccessResponse'
   /customers/{id}/plan-change:
     post:
       summary: Change a customer's plan
@@ -98,6 +212,75 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+  /customers/{id}/autopay:
+    get:
+      summary: Get autopay settings for a customer
+      parameters:
+        - $ref: '#/components/parameters/CustomerId'
+      responses:
+        '200':
+          description: Autopay settings
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericSuccessResponse'
+    post:
+      summary: Enable or disable autopay
+      parameters:
+        - $ref: '#/components/parameters/CustomerId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AutopayRequest'
+      responses:
+        '200':
+          description: Updated autopay settings
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericSuccessResponse'
+  /customers/{id}/sim:
+    get:
+      summary: Get a customer's SIM
+      parameters:
+        - $ref: '#/components/parameters/CustomerId'
+      responses:
+        '200':
+          description: SIM details, or null if none is attached
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericSuccessResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /customers/{id}/sim-replacement/eligibility:
+    get:
+      summary: Check SIM replacement eligibility
+      parameters:
+        - $ref: '#/components/parameters/CustomerId'
+      responses:
+        '200':
+          description: Eligibility decision and allowed reasons
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericSuccessResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /customers/{id}/interactions:
+    get:
+      summary: List a customer's interactions
+      parameters:
+        - $ref: '#/components/parameters/CustomerId'
+      responses:
+        '200':
+          description: Customer interactions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericSuccessResponse'
   /identity/otp/send:
     post:
       summary: Send a one-time password
@@ -161,6 +344,22 @@ paths:
                     properties:
                       data:
                         $ref: '#/components/schemas/IdentityVerifyData'
+  /chatbot/fulfillment:
+    post:
+      summary: Fulfill a chatbot intent
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChatbotFulfillmentRequest'
+      responses:
+        '200':
+          description: Chatbot fulfillment response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericSuccessResponse'
   /ivr/context:
     get:
       summary: Get IVR context for a phone number
@@ -194,6 +393,50 @@ paths:
                     properties:
                       data:
                         $ref: '#/components/schemas/SimReplacementData'
+  /sim-replacement/{requestCode}:
+    get:
+      summary: Get a SIM replacement request
+      parameters:
+        - in: path
+          name: requestCode
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: SIM replacement details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericSuccessResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /plans:
+    get:
+      summary: List active plans
+      responses:
+        '200':
+          description: Active plans
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericSuccessResponse'
+  /payments/link:
+    post:
+      summary: Create a payment link for a bill
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentLinkRequest'
+      responses:
+        '200':
+          description: Payment link
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericSuccessResponse'
   /segments:
     post:
       summary: Create a campaign segment
@@ -206,6 +449,20 @@ paths:
       responses:
         '201':
           description: Segment created
+  /segments/{id}/members:
+    get:
+      summary: List members of a segment
+      parameters:
+        - $ref: '#/components/parameters/ResourceId'
+      responses:
+        '200':
+          description: Segment members
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericSuccessResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
   /campaigns:
     post:
       summary: Create an outbound campaign
@@ -221,9 +478,79 @@ paths:
   /campaigns/{id}/launch:
     post:
       summary: Launch a campaign
+      parameters:
+        - $ref: '#/components/parameters/ResourceId'
       responses:
         '200':
           description: Campaign launched
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericSuccessResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /campaigns/{id}/messages:
+    get:
+      summary: List messages for a campaign
+      parameters:
+        - $ref: '#/components/parameters/ResourceId'
+      responses:
+        '200':
+          description: Campaign messages
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericSuccessResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /messages/send:
+    post:
+      summary: Send a one-off message to a customer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SendMessageRequest'
+      responses:
+        '200':
+          description: Sent message
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericSuccessResponse'
+  /webhooks/delivery:
+    post:
+      summary: Record a campaign message delivery update
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeliveryWebhookRequest'
+      responses:
+        '200':
+          description: Delivery update result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericSuccessResponse'
+  /webhooks/response:
+    post:
+      summary: Record a customer response to a campaign
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResponseWebhookRequest'
+      responses:
+        '200':
+          description: Response update result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericSuccessResponse'
   /cases:
     post:
       summary: Create a service case
@@ -236,7 +563,170 @@ paths:
       responses:
         '201':
           description: Case created
+    get:
+      summary: List cases
+      parameters:
+        - in: query
+          name: customerId
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: status
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: page
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - in: query
+          name: limit
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            default: 20
+      responses:
+        '200':
+          description: Paginated cases
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericSuccessResponse'
+  /cases/{id}:
+    get:
+      summary: Get a case by ID
+      parameters:
+        - $ref: '#/components/parameters/ResourceId'
+      responses:
+        '200':
+          description: Case details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericSuccessResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    patch:
+      summary: Update a case
+      parameters:
+        - $ref: '#/components/parameters/ResourceId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CaseUpdateRequest'
+      responses:
+        '200':
+          description: Updated case
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericSuccessResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /cases/{id}/notes:
+    post:
+      summary: Add a note to a case
+      parameters:
+        - $ref: '#/components/parameters/ResourceId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CaseNoteRequest'
+      responses:
+        '200':
+          description: Updated case with note
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericSuccessResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /cases/{id}/sla:
+    get:
+      summary: Get case SLA status
+      parameters:
+        - $ref: '#/components/parameters/ResourceId'
+      responses:
+        '200':
+          description: SLA deadline and breach status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericSuccessResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /interactions:
+    post:
+      summary: Create a customer interaction
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InteractionCreateRequest'
+      responses:
+        '201':
+          description: Created interaction
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericSuccessResponse'
+  /conversations/escalate:
+    post:
+      summary: Escalate a conversation to a support queue
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConversationEscalationRequest'
+      responses:
+        '200':
+          description: Conversation handoff details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericSuccessResponse'
+  /health:
+    get:
+      summary: Get API health status
+      responses:
+        '200':
+          description: API health
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericSuccessResponse'
 components:
+  parameters:
+    CustomerId:
+      in: path
+      name: id
+      required: true
+      schema:
+        type: string
+    ResourceId:
+      in: path
+      name: id
+      required: true
+      schema:
+        type: string
+  responses:
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
   schemas:
     SuccessResponse:
       type: object
@@ -472,6 +962,124 @@ components:
         priority:
           type: string
           enum: [LOW, MEDIUM, HIGH, URGENT]
+    GenericSuccessResponse:
+      type: object
+      required: [success, data, requestId]
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          type: object
+          additionalProperties: true
+        requestId:
+          type: string
+          format: uuid
+    AutopayRequest:
+      type: object
+      required: [enabled]
+      properties:
+        enabled:
+          type: boolean
+    ChatbotFulfillmentRequest:
+      type: object
+      required: [intent, customerId]
+      properties:
+        intent:
+          type: string
+          enum: [CHECK_BILL, CHECK_USAGE, UPGRADE_PLAN, CONFIRM_UPGRADE, SPEAK_TO_AGENT]
+        customerId:
+          type: string
+        params:
+          type: object
+          additionalProperties: true
+    PaymentLinkRequest:
+      type: object
+      required: [billId]
+      properties:
+        billId:
+          type: string
+    SendMessageRequest:
+      type: object
+      required: [customerId, channel, template]
+      properties:
+        customerId:
+          type: string
+        channel:
+          type: string
+          enum: [SMS, VOICE, WHATSAPP]
+        template:
+          type: string
+    DeliveryWebhookRequest:
+      type: object
+      required: [campaignId, customerId, status]
+      properties:
+        campaignId:
+          type: string
+        customerId:
+          type: string
+        status:
+          type: string
+    ResponseWebhookRequest:
+      type: object
+      required: [campaignId, customerId, responseText]
+      properties:
+        campaignId:
+          type: string
+        customerId:
+          type: string
+        responseText:
+          type: string
+    CaseUpdateRequest:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [OPEN, IN_PROGRESS, RESOLVED, CLOSED]
+        priority:
+          type: string
+          enum: [LOW, MEDIUM, HIGH, URGENT]
+        assignedAgentId:
+          type: string
+    CaseNoteRequest:
+      type: object
+      required: [text, author]
+      properties:
+        text:
+          type: string
+        author:
+          type: string
+    InteractionCreateRequest:
+      type: object
+      required: [customerId, channel, direction]
+      properties:
+        customerId:
+          type: string
+        caseId:
+          type: string
+        channel:
+          type: string
+          enum: [VOICE, CHAT, EMAIL, SOCIAL, SMS, WHATSAPP]
+        direction:
+          type: string
+          enum: [INBOUND, OUTBOUND]
+        summary:
+          type: string
+        transcriptRef:
+          type: string
+    ConversationEscalationRequest:
+      type: object
+      required: [customerId, intent, summary, context]
+      properties:
+        customerId:
+          type: string
+        intent:
+          type: string
+        summary:
+          type: string
+        context:
+          type: object
+          additionalProperties: true
   securitySchemes:
     bearerAuth:
       type: http
