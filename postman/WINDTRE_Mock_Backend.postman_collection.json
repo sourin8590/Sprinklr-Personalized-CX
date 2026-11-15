@@ -1,7 +1,7 @@
 {
   "info": {
     "name": "WINDTRE Mock Backend",
-    "description": "Complete mock telecom API collection for Sprinklr training and demos.",
+    "description": "Requests follow the OpenAPI contract. Set baseUrl to the deployed API base or your local API base.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
@@ -12,13 +12,11 @@
           "name": "Health check",
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
             "url": {
-              "raw": "http://localhost:3000/health",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "3000",
-              "path": ["health"]
+              "raw": "{{baseUrl}}/health"
             }
           }
         },
@@ -34,11 +32,7 @@
               "raw": "{\n  \"client_id\": \"sprinklr-demo-client\",\n  \"client_secret\": \"windtre-demo-api-key-123\"\n}"
             },
             "url": {
-              "raw": "http://localhost:3000/api/v1/auth/token",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "3000",
-              "path": ["api", "v1", "auth", "token"]
+              "raw": "{{baseUrl}}/auth/token"
             }
           }
         }
@@ -55,11 +49,7 @@
               { "key": "Authorization", "value": "Bearer {{token}}" }
             ],
             "url": {
-              "raw": "http://localhost:3000/api/v1/plans",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "3000",
-              "path": ["api", "v1", "plans"]
+              "raw": "{{baseUrl}}/plans"
             }
           }
         },
@@ -71,13 +61,9 @@
               { "key": "Authorization", "value": "Bearer {{token}}" }
             ],
             "url": {
-              "raw": "http://localhost:3000/api/v1/customers/lookup?msisdn=3331239821",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "3000",
-              "path": ["api", "v1", "customers", "lookup"],
+              "raw": "{{baseUrl}}/customers/lookup?msisdn={{msisdn}}",
               "query": [
-                { "key": "msisdn", "value": "3331239821" }
+                { "key": "msisdn", "value": "{{msisdn}}" }
               ]
             }
           }
@@ -90,11 +76,7 @@
               { "key": "Authorization", "value": "Bearer {{token}}" }
             ],
             "url": {
-              "raw": "http://localhost:3000/api/v1/customers/{{msisdn}}/profile",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "3000",
-              "path": ["api", "v1", "customers", "{{msisdn}}", "profile"]
+              "raw": "{{baseUrl}}/customers/{{msisdn}}/profile"
             }
           }
         },
@@ -106,11 +88,7 @@
               { "key": "Authorization", "value": "Bearer {{token}}" }
             ],
             "url": {
-              "raw": "http://localhost:3000/api/v1/customers/{{msisdn}}/plan",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "3000",
-              "path": ["api", "v1", "customers", "{{msisdn}}", "plan"]
+              "raw": "{{baseUrl}}/customers/{{msisdn}}/plan"
             }
           }
         },
@@ -122,11 +100,7 @@
               { "key": "Authorization", "value": "Bearer {{token}}" }
             ],
             "url": {
-              "raw": "http://localhost:3000/api/v1/customers/{{msisdn}}/usage",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "3000",
-              "path": ["api", "v1", "customers", "{{msisdn}}", "usage"]
+              "raw": "{{baseUrl}}/customers/{{msisdn}}/usage"
             }
           }
         },
@@ -138,11 +112,7 @@
               { "key": "Authorization", "value": "Bearer {{token}}" }
             ],
             "url": {
-              "raw": "http://localhost:3000/api/v1/customers/{{msisdn}}/billing/latest",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "3000",
-              "path": ["api", "v1", "customers", "{{msisdn}}", "billing", "latest"]
+              "raw": "{{baseUrl}}/customers/{{msisdn}}/billing/latest"
             }
           }
         },
@@ -154,11 +124,10 @@
               { "key": "Authorization", "value": "Bearer {{token}}" }
             ],
             "url": {
-              "raw": "http://localhost:3000/api/v1/customers/{{msisdn}}/bills",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "3000",
-              "path": ["api", "v1", "customers", "{{msisdn}}", "bills"]
+              "raw": "{{baseUrl}}/customers/{{msisdn}}/bills?status=DUE",
+              "query": [
+                { "key": "status", "value": "DUE" }
+              ]
             }
           }
         },
@@ -170,11 +139,7 @@
               { "key": "Authorization", "value": "Bearer {{token}}" }
             ],
             "url": {
-              "raw": "http://localhost:3000/api/v1/customers/{{msisdn}}/360",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "3000",
-              "path": ["api", "v1", "customers", "{{msisdn}}", "360"]
+              "raw": "{{baseUrl}}/customers/{{msisdn}}/360"
             }
           }
         },
@@ -186,11 +151,7 @@
               { "key": "Authorization", "value": "Bearer {{token}}" }
             ],
             "url": {
-              "raw": "http://localhost:3000/api/v1/customers/{{msisdn}}/offers",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "3000",
-              "path": ["api", "v1", "customers", "{{msisdn}}", "offers"]
+              "raw": "{{baseUrl}}/customers/{{msisdn}}/offers"
             }
           }
         },
@@ -202,11 +163,7 @@
               { "key": "Authorization", "value": "Bearer {{token}}" }
             ],
             "url": {
-              "raw": "http://localhost:3000/api/v1/customers/{{msisdn}}/next-best-action",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "3000",
-              "path": ["api", "v1", "customers", "{{msisdn}}", "next-best-action"]
+              "raw": "{{baseUrl}}/customers/{{msisdn}}/next-best-action"
             }
           }
         },
@@ -224,11 +181,7 @@
               "raw": "{\n  \"targetPlanCode\": \"5G_MAX\",\n  \"consent\": true,\n  \"channel\": \"IVR\"\n}"
             },
             "url": {
-              "raw": "http://localhost:3000/api/v1/customers/{{msisdn}}/plan-change",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "3000",
-              "path": ["api", "v1", "customers", "{{msisdn}}", "plan-change"]
+              "raw": "{{baseUrl}}/customers/{{msisdn}}/plan-change"
             }
           }
         }
@@ -250,11 +203,7 @@
               "raw": "{\n  \"billId\": \"{{billId}}\"\n}"
             },
             "url": {
-              "raw": "http://localhost:3000/api/v1/payments/link",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "3000",
-              "path": ["api", "v1", "payments", "link"]
+              "raw": "{{baseUrl}}/payments/link"
             }
           }
         },
@@ -271,11 +220,7 @@
               "raw": "{\n  \"enabled\": true\n}"
             },
             "url": {
-              "raw": "http://localhost:3000/api/v1/customers/{{msisdn}}/autopay",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "3000",
-              "path": ["api", "v1", "customers", "{{msisdn}}", "autopay"]
+              "raw": "{{baseUrl}}/customers/{{msisdn}}/autopay"
             }
           }
         },
@@ -287,11 +232,7 @@
               { "key": "Authorization", "value": "Bearer {{token}}" }
             ],
             "url": {
-              "raw": "http://localhost:3000/api/v1/customers/{{msisdn}}/autopay",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "3000",
-              "path": ["api", "v1", "customers", "{{msisdn}}", "autopay"]
+              "raw": "{{baseUrl}}/customers/{{msisdn}}/autopay"
             }
           }
         }
@@ -313,11 +254,7 @@
               "raw": "{\n  \"msisdn\": \"{{msisdn}}\",\n  \"channel\": \"SMS\"\n}"
             },
             "url": {
-              "raw": "http://localhost:3000/api/v1/identity/otp/send",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "3000",
-              "path": ["api", "v1", "identity", "otp", "send"]
+              "raw": "{{baseUrl}}/identity/otp/send"
             }
           }
         },
@@ -334,11 +271,7 @@
               "raw": "{\n  \"msisdn\": \"{{msisdn}}\",\n  \"code\": \"123456\"\n}"
             },
             "url": {
-              "raw": "http://localhost:3000/api/v1/identity/otp/validate",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "3000",
-              "path": ["api", "v1", "identity", "otp", "validate"]
+              "raw": "{{baseUrl}}/identity/otp/validate"
             }
           }
         },
@@ -355,11 +288,7 @@
               "raw": "{\n  \"msisdn\": \"{{msisdn}}\",\n  \"method\": \"OTP\",\n  \"value\": \"OTP\"\n}"
             },
             "url": {
-              "raw": "http://localhost:3000/api/v1/identity/verify",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "3000",
-              "path": ["api", "v1", "identity", "verify"]
+              "raw": "{{baseUrl}}/identity/verify"
             }
           }
         },
@@ -371,13 +300,9 @@
               { "key": "Authorization", "value": "Bearer {{token}}" }
             ],
             "url": {
-              "raw": "http://localhost:3000/api/v1/ivr/context?ani=3331239821",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "3000",
-              "path": ["api", "v1", "ivr", "context"],
+              "raw": "{{baseUrl}}/ivr/context?ani={{msisdn}}",
               "query": [
-                { "key": "ani", "value": "3331239821" }
+                { "key": "ani", "value": "{{msisdn}}" }
               ]
             }
           }
@@ -395,11 +320,7 @@
               "raw": "{\n  \"intent\": \"CHECK_BILL\",\n  \"msisdn\": \"{{msisdn}}\",\n  \"params\": {\n    \"billStatus\": \"OVERDUE\"\n  }\n}"
             },
             "url": {
-              "raw": "http://localhost:3000/api/v1/chatbot/fulfillment",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "3000",
-              "path": ["api", "v1", "chatbot", "fulfillment"]
+              "raw": "{{baseUrl}}/chatbot/fulfillment"
             }
           }
         }
@@ -416,11 +337,7 @@
               { "key": "Authorization", "value": "Bearer {{token}}" }
             ],
             "url": {
-              "raw": "http://localhost:3000/api/v1/customers/{{msisdn}}/sim",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "3000",
-              "path": ["api", "v1", "customers", "{{msisdn}}", "sim"]
+              "raw": "{{baseUrl}}/customers/{{msisdn}}/sim"
             }
           }
         },
@@ -432,11 +349,7 @@
               { "key": "Authorization", "value": "Bearer {{token}}" }
             ],
             "url": {
-              "raw": "http://localhost:3000/api/v1/customers/{{msisdn}}/sim-replacement/eligibility",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "3000",
-              "path": ["api", "v1", "customers", "{{msisdn}}", "sim-replacement", "eligibility"]
+              "raw": "{{baseUrl}}/customers/{{msisdn}}/sim-replacement/eligibility"
             }
           }
         },
@@ -454,11 +367,7 @@
               "raw": "{\n  \"msisdn\": \"{{msisdn}}\",\n  \"reason\": \"LOST\",\n  \"simType\": \"PHYSICAL\",\n  \"deliveryAddress\": {\n    \"street\": \"Via Roma 45\",\n    \"city\": \"Milan\",\n    \"postalCode\": \"20100\",\n    \"province\": \"MI\"\n  }\n}"
             },
             "url": {
-              "raw": "http://localhost:3000/api/v1/sim-replacement",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "3000",
-              "path": ["api", "v1", "sim-replacement"]
+              "raw": "{{baseUrl}}/sim-replacement"
             }
           }
         },
@@ -470,11 +379,7 @@
               { "key": "Authorization", "value": "Bearer {{token}}" }
             ],
             "url": {
-              "raw": "http://localhost:3000/api/v1/sim-replacement/{{requestCode}}",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "3000",
-              "path": ["api", "v1", "sim-replacement", "{{requestCode}}"]
+              "raw": "{{baseUrl}}/sim-replacement/{{requestCode}}"
             }
           }
         }
@@ -496,11 +401,7 @@
               "raw": "{\n  \"msisdn\": \"{{msisdn}}\",\n  \"channel\": \"VOICE\",\n  \"subject\": \"Billing question\",\n  \"description\": \"Need billing summary.\",\n  \"priority\": \"HIGH\"\n}"
             },
             "url": {
-              "raw": "http://localhost:3000/api/v1/cases",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "3000",
-              "path": ["api", "v1", "cases"]
+              "raw": "{{baseUrl}}/cases"
             }
           }
         },
@@ -512,11 +413,13 @@
               { "key": "Authorization", "value": "Bearer {{token}}" }
             ],
             "url": {
-              "raw": "http://localhost:3000/api/v1/cases",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "3000",
-              "path": ["api", "v1", "cases"]
+              "raw": "{{baseUrl}}/cases?msisdn={{msisdn}}&page=1&limit=20",
+              "query": [
+                { "key": "msisdn", "value": "{{msisdn}}" },
+                { "key": "status", "value": "OPEN", "disabled": true },
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "20" }
+              ]
             }
           }
         },
@@ -528,11 +431,7 @@
               { "key": "Authorization", "value": "Bearer {{token}}" }
             ],
             "url": {
-              "raw": "http://localhost:3000/api/v1/cases/{{caseNumber}}",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "3000",
-              "path": ["api", "v1", "cases", "{{caseNumber}}"]
+              "raw": "{{baseUrl}}/cases/{{caseNumber}}"
             }
           }
         },
@@ -549,11 +448,7 @@
               "raw": "{\n  \"status\": \"IN_PROGRESS\",\n  \"priority\": \"MEDIUM\"\n}"
             },
             "url": {
-              "raw": "http://localhost:3000/api/v1/cases/{{caseNumber}}",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "3000",
-              "path": ["api", "v1", "cases", "{{caseNumber}}"]
+              "raw": "{{baseUrl}}/cases/{{caseNumber}}"
             }
           }
         },
@@ -570,11 +465,7 @@
               "raw": "{\n  \"text\": \"Customer confirmed billing summary is needed.\",\n  \"author\": \"agent@sprinklr.local\"\n}"
             },
             "url": {
-              "raw": "http://localhost:3000/api/v1/cases/{{caseNumber}}/notes",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "3000",
-              "path": ["api", "v1", "cases", "{{caseNumber}}", "notes"]
+              "raw": "{{baseUrl}}/cases/{{caseNumber}}/notes"
             }
           }
         },
@@ -586,11 +477,7 @@
               { "key": "Authorization", "value": "Bearer {{token}}" }
             ],
             "url": {
-              "raw": "http://localhost:3000/api/v1/cases/{{caseNumber}}/sla",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "3000",
-              "path": ["api", "v1", "cases", "{{caseNumber}}", "sla"]
+              "raw": "{{baseUrl}}/cases/{{caseNumber}}/sla"
             }
           }
         },
@@ -602,11 +489,7 @@
               { "key": "Authorization", "value": "Bearer {{token}}" }
             ],
             "url": {
-              "raw": "http://localhost:3000/api/v1/customers/{{msisdn}}/interactions",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "3000",
-              "path": ["api", "v1", "customers", "{{msisdn}}", "interactions"]
+              "raw": "{{baseUrl}}/customers/{{msisdn}}/interactions"
             }
           }
         },
@@ -623,11 +506,7 @@
               "raw": "{\n  \"msisdn\": \"{{msisdn}}\",\n  \"channel\": \"CHAT\",\n  \"direction\": \"INBOUND\",\n  \"summary\": \"Customer asked about plan options.\"\n}"
             },
             "url": {
-              "raw": "http://localhost:3000/api/v1/interactions",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "3000",
-              "path": ["api", "v1", "interactions"]
+              "raw": "{{baseUrl}}/interactions"
             }
           }
         },
@@ -641,14 +520,10 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"conversationId\": \"conv-102\",\n  \"reason\": \"VIP customer\",\n  \"targetTeam\": \"WIRELESS_ESCALATIONS\"\n}"
+              "raw": "{\n  \"msisdn\": \"{{msisdn}}\",\n  \"intent\": \"SPEAK_TO_AGENT\",\n  \"summary\": \"Customer requested an agent.\",\n  \"context\": {\n    \"channel\": \"CHAT\"\n  }\n}"
             },
             "url": {
-              "raw": "http://localhost:3000/api/v1/conversations/escalate",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "3000",
-              "path": ["api", "v1", "conversations", "escalate"]
+              "raw": "{{baseUrl}}/conversations/escalate"
             }
           }
         }
@@ -670,11 +545,7 @@
               "raw": "{\n  \"name\": \"VIP_BILLING\",\n  \"ruleType\": \"OVERDUE\",\n  \"rule\": {\n    \"overdue\": true\n  }\n}"
             },
             "url": {
-              "raw": "http://localhost:3000/api/v1/segments",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "3000",
-              "path": ["api", "v1", "segments"]
+              "raw": "{{baseUrl}}/segments"
             }
           }
         },
@@ -686,11 +557,7 @@
               { "key": "Authorization", "value": "Bearer {{token}}" }
             ],
             "url": {
-              "raw": "http://localhost:3000/api/v1/segments/{{segmentId}}/members",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "3000",
-              "path": ["api", "v1", "segments", "{{segmentId}}", "members"]
+              "raw": "{{baseUrl}}/segments/{{segmentId}}/members"
             }
           }
         },
@@ -707,11 +574,7 @@
               "raw": "{\n  \"name\": \"Late bill reminder\",\n  \"channel\": \"SMS\",\n  \"segmentId\": \"{{segmentId}}\",\n  \"template\": \"Hi {{name}}, your bill is due.\"\n}"
             },
             "url": {
-              "raw": "http://localhost:3000/api/v1/campaigns",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "3000",
-              "path": ["api", "v1", "campaigns"]
+              "raw": "{{baseUrl}}/campaigns"
             }
           }
         },
@@ -723,11 +586,7 @@
               { "key": "Authorization", "value": "Bearer {{token}}" }
             ],
             "url": {
-              "raw": "http://localhost:3000/api/v1/campaigns/{{campaignId}}/launch",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "3000",
-              "path": ["api", "v1", "campaigns", "{{campaignId}}", "launch"]
+              "raw": "{{baseUrl}}/campaigns/{{campaignId}}/launch"
             }
           }
         },
@@ -739,11 +598,7 @@
               { "key": "Authorization", "value": "Bearer {{token}}" }
             ],
             "url": {
-              "raw": "http://localhost:3000/api/v1/campaigns/{{campaignId}}/messages",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "3000",
-              "path": ["api", "v1", "campaigns", "{{campaignId}}", "messages"]
+              "raw": "{{baseUrl}}/campaigns/{{campaignId}}/messages"
             }
           }
         },
@@ -760,11 +615,7 @@
               "raw": "{\n  \"msisdn\": \"{{msisdn}}\",\n  \"channel\": \"SMS\",\n  \"template\": \"Your bill has been updated.\"\n}"
             },
             "url": {
-              "raw": "http://localhost:3000/api/v1/messages/send",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "3000",
-              "path": ["api", "v1", "messages", "send"]
+              "raw": "{{baseUrl}}/messages/send"
             }
           }
         },
@@ -780,11 +631,7 @@
               "raw": "{\n  \"campaignId\": \"{{campaignId}}\",\n  \"msisdn\": \"{{msisdn}}\",\n  \"status\": \"DELIVERED\"\n}"
             },
             "url": {
-              "raw": "http://localhost:3000/api/v1/webhooks/delivery",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "3000",
-              "path": ["api", "v1", "webhooks", "delivery"]
+              "raw": "{{baseUrl}}/webhooks/delivery"
             }
           }
         },
@@ -800,11 +647,7 @@
               "raw": "{\n  \"campaignId\": \"{{campaignId}}\",\n  \"msisdn\": \"{{msisdn}}\",\n  \"responseText\": \"STOP\"\n}"
             },
             "url": {
-              "raw": "http://localhost:3000/api/v1/webhooks/response",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "3000",
-              "path": ["api", "v1", "webhooks", "response"]
+              "raw": "{{baseUrl}}/webhooks/response"
             }
           }
         }
@@ -812,6 +655,7 @@
     }
   ],
   "variable": [
+    { "key": "baseUrl", "value": "https://sprinklr-personalized-cx.vercel.app/api/v1" },
     { "key": "token", "value": "" },
     { "key": "billId", "value": "" },
     { "key": "caseNumber", "value": "" },
