@@ -4,7 +4,7 @@ info:
   version: 1.0.0
   description: Mock WINDTRE telecom API for Sprinklr training and demo environments.
 servers:
-  - url: https://sprinklr-personalized-cx.vercel.app/api/v1
+  - url: http://localhost:3000/api/v1
 paths:
   /auth/token:
     post:
@@ -42,6 +42,7 @@ paths:
           required: true
           schema:
             type: string
+            pattern: '^\d{10}$'
       responses:
         '200':
           description: Customer lookup result
@@ -60,11 +61,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-  /customers/{id}/profile:
+  /customers/{msisdn}/profile:
     get:
       summary: Get a customer profile
       parameters:
-        - $ref: '#/components/parameters/CustomerId'
+        - $ref: '#/components/parameters/CustomerMsisdn'
       responses:
         '200':
           description: Customer profile
@@ -74,11 +75,11 @@ paths:
                 $ref: '#/components/schemas/GenericSuccessResponse'
         '404':
           $ref: '#/components/responses/NotFound'
-  /customers/{id}/plan:
+  /customers/{msisdn}/plan:
     get:
       summary: Get a customer's active plan
       parameters:
-        - $ref: '#/components/parameters/CustomerId'
+        - $ref: '#/components/parameters/CustomerMsisdn'
       responses:
         '200':
           description: Active plan
@@ -88,11 +89,11 @@ paths:
                 $ref: '#/components/schemas/GenericSuccessResponse'
         '404':
           $ref: '#/components/responses/NotFound'
-  /customers/{id}/usage:
+  /customers/{msisdn}/usage:
     get:
       summary: Get a customer's latest usage record
       parameters:
-        - $ref: '#/components/parameters/CustomerId'
+        - $ref: '#/components/parameters/CustomerMsisdn'
       responses:
         '200':
           description: Usage record
@@ -102,11 +103,11 @@ paths:
                 $ref: '#/components/schemas/GenericSuccessResponse'
         '404':
           $ref: '#/components/responses/NotFound'
-  /customers/{id}/billing/latest:
+  /customers/{msisdn}/billing/latest:
     get:
       summary: Get a customer's latest bill
       parameters:
-        - $ref: '#/components/parameters/CustomerId'
+        - $ref: '#/components/parameters/CustomerMsisdn'
       responses:
         '200':
           description: Latest bill
@@ -116,11 +117,11 @@ paths:
                 $ref: '#/components/schemas/GenericSuccessResponse'
         '404':
           $ref: '#/components/responses/NotFound'
-  /customers/{id}/bills:
+  /customers/{msisdn}/bills:
     get:
       summary: List a customer's bills
       parameters:
-        - $ref: '#/components/parameters/CustomerId'
+        - $ref: '#/components/parameters/CustomerMsisdn'
         - in: query
           name: status
           required: false
@@ -134,11 +135,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericSuccessResponse'
-  /customers/{id}/360:
+  /customers/{msisdn}/360:
     get:
       summary: Get a customer's 360-degree view
       parameters:
-        - $ref: '#/components/parameters/CustomerId'
+        - $ref: '#/components/parameters/CustomerMsisdn'
       responses:
         '200':
           description: Combined customer, plan, usage, bill, case, and interaction data
@@ -148,11 +149,11 @@ paths:
                 $ref: '#/components/schemas/GenericSuccessResponse'
         '404':
           $ref: '#/components/responses/NotFound'
-  /customers/{id}/offers:
+  /customers/{msisdn}/offers:
     get:
       summary: List offers available to a customer
       parameters:
-        - $ref: '#/components/parameters/CustomerId'
+        - $ref: '#/components/parameters/CustomerMsisdn'
       responses:
         '200':
           description: Eligible offers
@@ -162,11 +163,11 @@ paths:
                 $ref: '#/components/schemas/GenericSuccessResponse'
         '404':
           $ref: '#/components/responses/NotFound'
-  /customers/{id}/next-best-action:
+  /customers/{msisdn}/next-best-action:
     get:
       summary: Get a customer's recommended next action
       parameters:
-        - $ref: '#/components/parameters/CustomerId'
+        - $ref: '#/components/parameters/CustomerMsisdn'
       responses:
         '200':
           description: Recommended action
@@ -174,7 +175,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericSuccessResponse'
-  /customers/{id}/plan-change:
+  /customers/{msisdn}/plan-change:
     post:
       summary: Change a customer's plan
       parameters:
@@ -184,10 +185,11 @@ paths:
           schema:
             type: string
         - in: path
-          name: id
+          name: msisdn
           required: true
           schema:
             type: string
+            pattern: '^\d{10}$'
       requestBody:
         required: true
         content:
@@ -212,11 +214,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-  /customers/{id}/autopay:
+  /customers/{msisdn}/autopay:
     get:
       summary: Get autopay settings for a customer
       parameters:
-        - $ref: '#/components/parameters/CustomerId'
+        - $ref: '#/components/parameters/CustomerMsisdn'
       responses:
         '200':
           description: Autopay settings
@@ -227,7 +229,7 @@ paths:
     post:
       summary: Enable or disable autopay
       parameters:
-        - $ref: '#/components/parameters/CustomerId'
+        - $ref: '#/components/parameters/CustomerMsisdn'
       requestBody:
         required: true
         content:
@@ -241,11 +243,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericSuccessResponse'
-  /customers/{id}/sim:
+  /customers/{msisdn}/sim:
     get:
       summary: Get a customer's SIM
       parameters:
-        - $ref: '#/components/parameters/CustomerId'
+        - $ref: '#/components/parameters/CustomerMsisdn'
       responses:
         '200':
           description: SIM details, or null if none is attached
@@ -255,11 +257,11 @@ paths:
                 $ref: '#/components/schemas/GenericSuccessResponse'
         '404':
           $ref: '#/components/responses/NotFound'
-  /customers/{id}/sim-replacement/eligibility:
+  /customers/{msisdn}/sim-replacement/eligibility:
     get:
       summary: Check SIM replacement eligibility
       parameters:
-        - $ref: '#/components/parameters/CustomerId'
+        - $ref: '#/components/parameters/CustomerMsisdn'
       responses:
         '200':
           description: Eligibility decision and allowed reasons
@@ -269,11 +271,11 @@ paths:
                 $ref: '#/components/schemas/GenericSuccessResponse'
         '404':
           $ref: '#/components/responses/NotFound'
-  /customers/{id}/interactions:
+  /customers/{msisdn}/interactions:
     get:
       summary: List a customer's interactions
       parameters:
-        - $ref: '#/components/parameters/CustomerId'
+        - $ref: '#/components/parameters/CustomerMsisdn'
       responses:
         '200':
           description: Customer interactions
@@ -567,10 +569,11 @@ paths:
       summary: List cases
       parameters:
         - in: query
-          name: customerId
+          name: msisdn
           required: false
           schema:
             type: string
+            pattern: '^\d{10}$'
         - in: query
           name: status
           required: false
@@ -597,11 +600,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericSuccessResponse'
-  /cases/{id}:
+  /cases/{caseNumber}:
     get:
-      summary: Get a case by ID
+      summary: Get a case by case number
       parameters:
-        - $ref: '#/components/parameters/ResourceId'
+        - $ref: '#/components/parameters/CaseNumber'
       responses:
         '200':
           description: Case details
@@ -612,9 +615,9 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
     patch:
-      summary: Update a case
+      summary: Update a case by case number
       parameters:
-        - $ref: '#/components/parameters/ResourceId'
+        - $ref: '#/components/parameters/CaseNumber'
       requestBody:
         required: true
         content:
@@ -630,11 +633,11 @@ paths:
                 $ref: '#/components/schemas/GenericSuccessResponse'
         '404':
           $ref: '#/components/responses/NotFound'
-  /cases/{id}/notes:
+  /cases/{caseNumber}/notes:
     post:
-      summary: Add a note to a case
+      summary: Add a note to a case by case number
       parameters:
-        - $ref: '#/components/parameters/ResourceId'
+        - $ref: '#/components/parameters/CaseNumber'
       requestBody:
         required: true
         content:
@@ -650,11 +653,11 @@ paths:
                 $ref: '#/components/schemas/GenericSuccessResponse'
         '404':
           $ref: '#/components/responses/NotFound'
-  /cases/{id}/sla:
+  /cases/{caseNumber}/sla:
     get:
-      summary: Get case SLA status
+      summary: Get case SLA status by case number
       parameters:
-        - $ref: '#/components/parameters/ResourceId'
+        - $ref: '#/components/parameters/CaseNumber'
       responses:
         '200':
           description: SLA deadline and breach status
@@ -708,18 +711,27 @@ paths:
                 $ref: '#/components/schemas/GenericSuccessResponse'
 components:
   parameters:
-    CustomerId:
+    CustomerMsisdn:
       in: path
-      name: id
+      name: msisdn
       required: true
       schema:
         type: string
+        pattern: '^\d{10}$'
     ResourceId:
       in: path
       name: id
       required: true
       schema:
         type: string
+    CaseNumber:
+      in: path
+      name: caseNumber
+      required: true
+      schema:
+        type: string
+        pattern: '^CASE-\d{6}$'
+        example: CASE-000045
   responses:
     NotFound:
       description: Resource not found
@@ -789,7 +801,7 @@ components:
           type: string
     CustomerLookupData:
       type: object
-      required: [id, name, tier, msisdn]
+      required: [id, name, tier, msisdn, currentPlan]
       properties:
         id:
           type: string
@@ -801,6 +813,35 @@ components:
         msisdn:
           type: string
           description: Masked phone number
+        currentPlan:
+          allOf:
+            - $ref: '#/components/schemas/PlanDetails'
+          nullable: true
+          description: Active plan, or null when the customer has no active subscription.
+    PlanDetails:
+      type: object
+      required: [code, name, monthlyPrice, currency, dataGb, euRoaming, priority5g]
+      properties:
+        code:
+          type: string
+          example: 5G_START
+        name:
+          type: string
+          example: 5G Start
+        monthlyPrice:
+          type: number
+          format: float
+          example: 14.99
+        currency:
+          type: string
+          example: EUR
+        dataGb:
+          type: number
+          example: 25
+        euRoaming:
+          type: boolean
+        priority5g:
+          type: boolean
     PlanChangeRequest:
       type: object
       required: [targetPlanCode, consent, channel]
@@ -822,10 +863,11 @@ components:
           type: string
     OtpSendRequest:
       type: object
-      required: [customerId]
+      required: [msisdn]
       properties:
-        customerId:
+        msisdn:
           type: string
+          pattern: '^\d{10}$'
         channel:
           type: string
           enum: [SMS, EMAIL, VOICE]
@@ -846,10 +888,11 @@ components:
           description: Demo OTP when MOCK_OTP is enabled; otherwise a sent status.
     OtpValidateRequest:
       type: object
-      required: [customerId, code]
+      required: [msisdn, code]
       properties:
-        customerId:
+        msisdn:
           type: string
+          pattern: '^\d{10}$'
         code:
           type: string
     OtpValidateData:
@@ -862,10 +905,11 @@ components:
           type: boolean
     IdentityVerifyRequest:
       type: object
-      required: [customerId, method, value]
+      required: [msisdn, method, value]
       properties:
-        customerId:
+        msisdn:
           type: string
+          pattern: '^\d{10}$'
         method:
           type: string
           enum: [OTP, DOB, FISCAL_CODE]
@@ -894,10 +938,11 @@ components:
           type: string
     SimReplacementRequest:
       type: object
-      required: [customerId, reason, simType]
+      required: [msisdn, reason, simType]
       properties:
-        customerId:
+        msisdn:
           type: string
+          pattern: '^\d{10}$'
         reason:
           type: string
           enum: [LOST, DAMAGED, STOLEN, UPGRADE]
@@ -948,10 +993,11 @@ components:
           format: date-time
     CaseCreateRequest:
       type: object
-      required: [customerId, channel, subject]
+      required: [msisdn, channel, subject]
       properties:
-        customerId:
+        msisdn:
           type: string
+          pattern: '^\d{10}$'
         channel:
           type: string
           enum: [VOICE, CHAT, EMAIL, SOCIAL, SMS, WHATSAPP]
@@ -983,13 +1029,14 @@ components:
           type: boolean
     ChatbotFulfillmentRequest:
       type: object
-      required: [intent, customerId]
+      required: [intent, msisdn]
       properties:
         intent:
           type: string
           enum: [CHECK_BILL, CHECK_USAGE, UPGRADE_PLAN, CONFIRM_UPGRADE, SPEAK_TO_AGENT]
-        customerId:
+        msisdn:
           type: string
+          pattern: '^\d{10}$'
         params:
           type: object
           additionalProperties: true
@@ -1001,10 +1048,11 @@ components:
           type: string
     SendMessageRequest:
       type: object
-      required: [customerId, channel, template]
+      required: [msisdn, channel, template]
       properties:
-        customerId:
+        msisdn:
           type: string
+          pattern: '^\d{10}$'
         channel:
           type: string
           enum: [SMS, VOICE, WHATSAPP]
@@ -1012,22 +1060,24 @@ components:
           type: string
     DeliveryWebhookRequest:
       type: object
-      required: [campaignId, customerId, status]
+      required: [campaignId, msisdn, status]
       properties:
         campaignId:
           type: string
-        customerId:
+        msisdn:
           type: string
+          pattern: '^\d{10}$'
         status:
           type: string
     ResponseWebhookRequest:
       type: object
-      required: [campaignId, customerId, responseText]
+      required: [campaignId, msisdn, responseText]
       properties:
         campaignId:
           type: string
-        customerId:
+        msisdn:
           type: string
+          pattern: '^\d{10}$'
         responseText:
           type: string
     CaseUpdateRequest:
@@ -1051,12 +1101,15 @@ components:
           type: string
     InteractionCreateRequest:
       type: object
-      required: [customerId, channel, direction]
+      required: [msisdn, channel, direction]
       properties:
-        customerId:
+        msisdn:
           type: string
-        caseId:
+          pattern: '^\d{10}$'
+        caseNumber:
           type: string
+          pattern: '^CASE-\d{6}$'
+          description: Optional case number to associate with this interaction.
         channel:
           type: string
           enum: [VOICE, CHAT, EMAIL, SOCIAL, SMS, WHATSAPP]
@@ -1069,10 +1122,11 @@ components:
           type: string
     ConversationEscalationRequest:
       type: object
-      required: [customerId, intent, summary, context]
+      required: [msisdn, intent, summary, context]
       properties:
-        customerId:
+        msisdn:
           type: string
+          pattern: '^\d{10}$'
         intent:
           type: string
         summary:

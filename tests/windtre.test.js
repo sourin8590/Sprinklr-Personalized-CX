@@ -6,7 +6,7 @@ jest.setTimeout(120000);
 
 let app;
 let token;
-let customerId;
+const customerMsisdn = '3331239821';
 let mongoServer;
 
 beforeAll(async () => {
@@ -27,12 +27,6 @@ beforeAll(async () => {
     .send({ client_id: 'sprinklr-demo-client', client_secret: 'windtre-demo-api-key-123' });
 
   token = authResponse.body.data.token;
-
-  const lookupResponse = await request(app)
-    .get('/api/v1/customers/lookup?msisdn=3331239821')
-    .set('Authorization', `Bearer ${token}`);
-
-  customerId = lookupResponse.body.data.id;
 });
 
 afterAll(async () => {
@@ -41,6 +35,42 @@ afterAll(async () => {
 });
 
 describe('Windtre mock backend', () => {
+  test('customer routes resolve records from MSISDN', async () => {
+    const lookup = await request(app)
+      .get(`/api/v1/customers/lookup?msisdn=${customerMsisdn}`)
+      .set('Authorization', `Bearer ${token}`);
+
+    expect(lookup.status).toBe(200);
+    expect(lookup.body.data.currentPlan).toMatchObject({
+      code: '5G_START',
+      name: '5G Start',
+      monthlyPrice: 14.99,
+      currency: 'EUR',
+      dataGb: 25,
+    });
+
+    const profile = await request(app)
+      .get(`/api/v1/customers/${customerMsisdn}/profile`)
+      .set('Authorization', `Bearer ${token}`);
+
+    expect(profile.status).toBe(200);
+    expect(profile.body.data.msisdn).toMatch(/\*+9821$/);
+
+    const invalidMsisdn = await request(app)
+      .get('/api/v1/customers/not-a-number/profile')
+      .set('Authorization', `Bearer ${token}`);
+
+    expect(invalidMsisdn.status).toBe(400);
+    expect(invalidMsisdn.body.error.code).toBe('VALIDATION_ERROR');
+
+    const cases = await request(app)
+      .get(`/api/v1/cases?msisdn=${customerMsisdn}`)
+      .set('Authorization', `Bearer ${token}`);
+
+    expect(cases.status).toBe(200);
+    expect(cases.body.data.items.length).toBeGreaterThan(0);
+  });
+
   test('IVR context is returned for the ANI lookup', async () => {
     const response = await request(app)
       .get('/api/v1/ivr/context?ani=3331239821')
@@ -55,7 +85,7 @@ describe('Windtre mock backend', () => {
 
   test('plan change succeeds when consent is granted', async () => {
     const response = await request(app)
-      .post(`/api/v1/customers/${customerId}/plan-change`)
+      .post(`/api/v1/customers/${customerMsisdn}/plan-change`)
       .set('Authorization', `Bearer ${token}`)
       .set('Idempotency-Key', 'plan-change-ok-1')
       .send({ targetPlanCode: '5G_MAX', consent: true, channel: 'IVR' });
@@ -66,7 +96,7 @@ describe('Windtre mock backend', () => {
 
   test('plan change rejects when consent is missing', async () => {
     const response = await request(app)
-      .post(`/api/v1/customers/${customerId}/plan-change`)
+      .post(`/api/v1/customers/${customerMsisdn}/plan-change`)
       .set('Authorization', `Bearer ${token}`)
       .set('Idempotency-Key', 'plan-change-no-consent')
       .send({ targetPlanCode: 'UNLIMITED_PLUS', consent: false, channel: 'CHAT' });
@@ -76,14 +106,8 @@ describe('Windtre mock backend', () => {
   });
 
   test('SIM replacement workflow completes end to end', async () => {
-    const altCustomerLookup = await request(app)
-      .get('/api/v1/customers/lookup?msisdn=3331239822')
-      .set('Authorization', `Bearer ${token}`);
-
-    const replacementCustomerId = altCustomerLookup.body.data.id;
-
     const eligibility = await request(app)
-      .get(`/api/v1/customers/${replacementCustomerId}/sim-replacement/eligibility`)
+      .get('/api/v1/customers/3331239822/sim-replacement/eligibility')
       .set('Authorization', `Bearer ${token}`);
 
     expect(eligibility.status).toBe(200);
@@ -94,7 +118,7 @@ describe('Windtre mock backend', () => {
       .set('Authorization', `Bearer ${token}`)
       .set('Idempotency-Key', 'sim-replacement-1')
       .send({
-        customerId: replacementCustomerId,
+        msisdn: '3331239822',
         reason: 'LOST',
         simType: 'PHYSICAL',
         deliveryAddress: {
@@ -120,7 +144,7 @@ describe('Windtre mock backend', () => {
     const send = await request(app)
       .post('/api/v1/identity/otp/send')
       .set('Authorization', `Bearer ${token}`)
-      .send({ customerId, channel: 'SMS' });
+      .send({ msisdn: customerMsisdn, channel: 'SMS' });
 
     expect(send.status).toBe(200);
     const sixDigitCode = send.body.data.otpCode;
@@ -128,7 +152,7 @@ describe('Windtre mock backend', () => {
     const validate = await request(app)
       .post('/api/v1/identity/otp/validate')
       .set('Authorization', `Bearer ${token}`)
-      .send({ customerId, code: sixDigitCode });
+      .send({ msisdn: customerMsisdn, code: sixDigitCode });
 
     expect(validate.status).toBe(200);
     expect(validate.body.data.verified).toBe(true);
@@ -136,7 +160,7 @@ describe('Windtre mock backend', () => {
     const verify = await request(app)
       .post('/api/v1/identity/verify')
       .set('Authorization', `Bearer ${token}`)
-      .send({ customerId, method: 'OTP', value: 'OTP' });
+      .send({ msisdn: customerMsisdn, method: 'OTP', value: 'OTP' });
 
     expect(verify.status).toBe(200);
     expect(verify.body.data.result).toBe('PASS');
@@ -175,6 +199,20 @@ describe('Windtre mock backend', () => {
 
     expect(messages.status).toBe(200);
     expect(messages.body.data.items.length).toBeGreaterThan(0);
+
+    const delivery = await request(app)
+      .post('/api/v1/webhooks/delivery')
+      .set('Authorization', `Bearer ${token}`)
+      .send({ campaignId: campaign.body.data._id, msisdn: customerMsisdn, status: 'DELIVERED' });
+
+    expect(delivery.status).toBe(200);
+
+    const response = await request(app)
+      .post('/api/v1/webhooks/response')
+      .set('Authorization', `Bearer ${token}`)
+      .send({ campaignId: campaign.body.data._id, msisdn: customerMsisdn, responseText: 'STOP' });
+
+    expect(response.status).toBe(200);
   });
 
   test('case creation records a valid case', async () => {
@@ -182,7 +220,7 @@ describe('Windtre mock backend', () => {
       .post('/api/v1/cases')
       .set('Authorization', `Bearer ${token}`)
       .send({
-        customerId,
+        msisdn: customerMsisdn,
         channel: 'VOICE',
         subject: 'Billing question',
         description: 'Customer needs a billing summary.',
@@ -191,6 +229,50 @@ describe('Windtre mock backend', () => {
 
     expect(response.status).toBe(201);
     expect(response.body.data.caseNumber).toMatch(/CASE-/);
+
+    const caseNumber = response.body.data.caseNumber;
+    const fetched = await request(app)
+      .get(`/api/v1/cases/${caseNumber}`)
+      .set('Authorization', `Bearer ${token}`);
+
+    expect(fetched.status).toBe(200);
+    expect(fetched.body.data.caseNumber).toBe(caseNumber);
+
+    const updated = await request(app)
+      .patch(`/api/v1/cases/${caseNumber}`)
+      .set('Authorization', `Bearer ${token}`)
+      .send({ status: 'IN_PROGRESS' });
+
+    expect(updated.status).toBe(200);
+    expect(updated.body.data.status).toBe('IN_PROGRESS');
+
+    const note = await request(app)
+      .post(`/api/v1/cases/${caseNumber}/notes`)
+      .set('Authorization', `Bearer ${token}`)
+      .send({ text: 'Follow-up requested', author: 'Agent' });
+
+    expect(note.status).toBe(200);
+    expect(note.body.data.notes.some((item) => item.text === 'Follow-up requested')).toBe(true);
+
+    const sla = await request(app)
+      .get(`/api/v1/cases/${caseNumber}/sla`)
+      .set('Authorization', `Bearer ${token}`);
+
+    expect(sla.status).toBe(200);
+    expect(sla.body.data.caseNumber).toBe(caseNumber);
+
+    const interaction = await request(app)
+      .post('/api/v1/interactions')
+      .set('Authorization', `Bearer ${token}`)
+      .send({
+        msisdn: customerMsisdn,
+        caseNumber,
+        channel: 'CHAT',
+        direction: 'INBOUND',
+        summary: 'Case follow-up',
+      });
+
+    expect(interaction.status).toBe(201);
   });
 
   test('validation and missing auth return the expected errors', async () => {
@@ -210,20 +292,20 @@ describe('Windtre mock backend', () => {
 
   test('404 and duplicate idempotency are surfaced correctly', async () => {
     const missing = await request(app)
-      .get('/api/v1/customers/000000000000000000000000/profile')
+      .get('/api/v1/customers/0000000000/profile')
       .set('Authorization', `Bearer ${token}`);
 
     expect(missing.status).toBe(404);
     expect(missing.body.error.code).toBe('NOT_FOUND');
 
     const a = await request(app)
-      .post(`/api/v1/customers/${customerId}/plan-change`)
+      .post(`/api/v1/customers/${customerMsisdn}/plan-change`)
       .set('Authorization', `Bearer ${token}`)
       .set('Idempotency-Key', 'duplicate-key-123')
       .send({ targetPlanCode: 'UNLIMITED_PLUS', consent: true, channel: 'AGENT' });
 
     const b = await request(app)
-      .post(`/api/v1/customers/${customerId}/plan-change`)
+      .post(`/api/v1/customers/${customerMsisdn}/plan-change`)
       .set('Authorization', `Bearer ${token}`)
       .set('Idempotency-Key', 'duplicate-key-123')
       .send({ targetPlanCode: 'FAMILY_5G', consent: true, channel: 'AGENT' });

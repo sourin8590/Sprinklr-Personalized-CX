@@ -19,6 +19,7 @@ const {
   handleDeliveryWebhook,
   handleResponseWebhook,
 } = require('../services/outboundService');
+const resolveCustomerByMsisdn = require('../middleware/resolveCustomerByMsisdn');
 
 const router = express.Router();
 
@@ -53,18 +54,18 @@ router.get('/campaigns/:id/messages', asyncHandler(async (req, res) => {
   return apiResponse(res, 200, { items: result }, req.requestId);
 }));
 
-router.post('/messages/send', validate(sendMessageSchema), asyncHandler(async (req, res) => {
-  const result = await sendOneOffMessage(req.body);
+router.post('/messages/send', validate(sendMessageSchema), resolveCustomerByMsisdn(), asyncHandler(async (req, res) => {
+  const result = await sendOneOffMessage({ ...req.body, customerId: req.customerId });
   return apiResponse(res, 200, result, req.requestId);
 }));
 
-router.post('/webhooks/delivery', validate(deliveryWebhookSchema), asyncHandler(async (req, res) => {
-  const result = await handleDeliveryWebhook(req.body);
+router.post('/webhooks/delivery', validate(deliveryWebhookSchema), resolveCustomerByMsisdn(), asyncHandler(async (req, res) => {
+  const result = await handleDeliveryWebhook({ ...req.body, customerId: req.customerId });
   return apiResponse(res, 200, result, req.requestId);
 }));
 
-router.post('/webhooks/response', validate(responseWebhookSchema), asyncHandler(async (req, res) => {
-  const result = await handleResponseWebhook(req.body);
+router.post('/webhooks/response', validate(responseWebhookSchema), resolveCustomerByMsisdn(), asyncHandler(async (req, res) => {
+  const result = await handleResponseWebhook({ ...req.body, customerId: req.customerId });
   return apiResponse(res, 200, result, req.requestId);
 }));
 

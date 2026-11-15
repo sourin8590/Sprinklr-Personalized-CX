@@ -15,20 +15,20 @@ const campaignSchema = Joi.object({
 });
 
 const sendMessageSchema = Joi.object({
-  customerId: Joi.string().required(),
+  msisdn: Joi.string().pattern(/^\d{10}$/).required(),
   channel: Joi.string().valid('SMS', 'VOICE', 'WHATSAPP').required(),
   template: Joi.string().required(),
 });
 
 const deliveryWebhookSchema = Joi.object({
   campaignId: Joi.string().required(),
-  customerId: Joi.string().required(),
+  msisdn: Joi.string().pattern(/^\d{10}$/).required(),
   status: Joi.string().required(),
 });
 
 const responseWebhookSchema = Joi.object({
   campaignId: Joi.string().required(),
-  customerId: Joi.string().required(),
+  msisdn: Joi.string().pattern(/^\d{10}$/).required(),
   responseText: Joi.string().required(),
 });
 

@@ -14,11 +14,25 @@ const { writeAuditLog } = require('./auditService');
 async function lookupCustomerByMsisdn(msisdn) {
   const customer = await Customer.findOne({ msisdn }).lean();
   if (!customer) throw new AppError(404, 'NOT_FOUND', 'Customer not found');
+  const subscription = await Subscription.findOne({ customer: customer._id, status: 'ACTIVE' })
+    .populate('plan')
+    .lean();
+  const plan = subscription?.plan;
+
   return {
     id: customer._id,
     name: `${customer.firstName} ${customer.lastName}`,
     tier: customer.tier,
     msisdn: maskMsisdn(customer.msisdn),
+    currentPlan: plan ? {
+      code: plan.code,
+      name: plan.name,
+      monthlyPrice: plan.monthlyPrice,
+      currency: plan.currency,
+      dataGb: plan.dataGb,
+      euRoaming: plan.euRoaming,
+      priority5g: plan.priority5g,
+    } : null,
   };
 }
 

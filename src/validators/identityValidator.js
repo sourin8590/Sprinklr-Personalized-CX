@@ -1,17 +1,19 @@
 const Joi = require('joi');
 
+const msisdn = Joi.string().pattern(/^\d{10}$/).required();
+
 const sendOtpSchema = Joi.object({
-  customerId: Joi.string().required(),
+  msisdn,
   channel: Joi.string().valid('SMS', 'EMAIL', 'VOICE').default('SMS'),
 });
 
 const validateOtpSchema = Joi.object({
-  customerId: Joi.string().required(),
+  msisdn,
   code: Joi.string().required(),
 });
 
 const verifySchema = Joi.object({
-  customerId: Joi.string().required(),
+  msisdn,
   method: Joi.string().valid('OTP', 'DOB', 'FISCAL_CODE').required(),
   value: Joi.alternatives().try(Joi.string(), Joi.number()).required(),
 });

@@ -10,21 +10,22 @@ const {
   getSimReplacementByRequestCode,
 } = require('../services/simService');
 const idempotency = require('../middleware/idempotency');
+const resolveCustomerByMsisdn = require('../middleware/resolveCustomerByMsisdn');
 
 const router = express.Router();
 
-router.get('/customers/:id/sim', asyncHandler(async (req, res) => {
-  const result = await getCustomerSim(req.params.id);
+router.get('/customers/:msisdn/sim', resolveCustomerByMsisdn(), asyncHandler(async (req, res) => {
+  const result = await getCustomerSim(req.customerId);
   return apiResponse(res, 200, result, req.requestId);
 }));
 
-router.get('/customers/:id/sim-replacement/eligibility', asyncHandler(async (req, res) => {
-  const result = await getSimReplacementEligibility(req.params.id);
+router.get('/customers/:msisdn/sim-replacement/eligibility', resolveCustomerByMsisdn(), asyncHandler(async (req, res) => {
+  const result = await getSimReplacementEligibility(req.customerId);
   return apiResponse(res, 200, result, req.requestId);
 }));
 
-router.post('/sim-replacement', idempotency, validate(simReplacementSchema), asyncHandler(async (req, res) => {
-  const result = await requestSimReplacement(req.body, req.idempotencyKey);
+router.post('/sim-replacement', idempotency, validate(simReplacementSchema), resolveCustomerByMsisdn(), asyncHandler(async (req, res) => {
+  const result = await requestSimReplacement({ ...req.body, customerId: req.customerId }, req.idempotencyKey);
   return apiResponse(res, 200, result, req.requestId);
 }));
 

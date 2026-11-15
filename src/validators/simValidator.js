@@ -1,7 +1,7 @@
 const Joi = require('joi');
 
 const simReplacementSchema = Joi.object({
-  customerId: Joi.string().required(),
+  msisdn: Joi.string().pattern(/^\d{10}$/).required(),
   reason: Joi.string().valid('LOST', 'DAMAGED', 'STOLEN', 'UPGRADE').required(),
   simType: Joi.string().valid('PHYSICAL', 'ESIM').required(),
   deliveryAddress: Joi.object({

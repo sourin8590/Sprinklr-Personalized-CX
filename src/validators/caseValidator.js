@@ -1,7 +1,7 @@
 const Joi = require('joi');
 
 const createCaseSchema = Joi.object({
-  customerId: Joi.string().required(),
+  msisdn: Joi.string().pattern(/^\d{10}$/).required(),
   channel: Joi.string().valid('VOICE', 'CHAT', 'EMAIL', 'SOCIAL', 'SMS', 'WHATSAPP').required(),
   subject: Joi.string().required(),
   description: Joi.string().allow('').optional(),
@@ -20,8 +20,8 @@ const addNoteSchema = Joi.object({
 });
 
 const interactionSchema = Joi.object({
-  customerId: Joi.string().required(),
-  caseId: Joi.string().optional(),
+  msisdn: Joi.string().pattern(/^\d{10}$/).required(),
+  caseNumber: Joi.string().pattern(/^CASE-\d{6}$/).optional(),
   channel: Joi.string().valid('VOICE', 'CHAT', 'EMAIL', 'SOCIAL', 'SMS', 'WHATSAPP').required(),
   direction: Joi.string().valid('INBOUND', 'OUTBOUND').required(),
   summary: Joi.string().optional(),
@@ -29,7 +29,7 @@ const interactionSchema = Joi.object({
 });
 
 const escalateSchema = Joi.object({
-  customerId: Joi.string().required(),
+  msisdn: Joi.string().pattern(/^\d{10}$/).required(),
   intent: Joi.string().required(),
   summary: Joi.string().required(),
   context: Joi.object().required(),

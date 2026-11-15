@@ -16,6 +16,7 @@ const {
   changePlan,
 } = require('../services/customerService');
 const idempotency = require('../middleware/idempotency');
+const resolveCustomerByMsisdn = require('../middleware/resolveCustomerByMsisdn');
 
 const router = express.Router();
 
@@ -24,48 +25,48 @@ router.get('/lookup', validate(lookupSchema, 'query'), asyncHandler(async (req, 
   return apiResponse(res, 200, result, req.requestId);
 }));
 
-router.get('/:id/profile', asyncHandler(async (req, res) => {
-  const result = await getCustomerProfile(req.params.id);
+router.get('/:msisdn/profile', resolveCustomerByMsisdn(), asyncHandler(async (req, res) => {
+  const result = await getCustomerProfile(req.customerId);
   return apiResponse(res, 200, result, req.requestId);
 }));
 
-router.get('/:id/plan', asyncHandler(async (req, res) => {
-  const result = await getCustomerPlan(req.params.id);
+router.get('/:msisdn/plan', resolveCustomerByMsisdn(), asyncHandler(async (req, res) => {
+  const result = await getCustomerPlan(req.customerId);
   return apiResponse(res, 200, result, req.requestId);
 }));
 
-router.get('/:id/usage', asyncHandler(async (req, res) => {
-  const result = await getCustomerUsage(req.params.id);
+router.get('/:msisdn/usage', resolveCustomerByMsisdn(), asyncHandler(async (req, res) => {
+  const result = await getCustomerUsage(req.customerId);
   return apiResponse(res, 200, result, req.requestId);
 }));
 
-router.get('/:id/billing/latest', asyncHandler(async (req, res) => {
-  const result = await getLatestBill(req.params.id);
+router.get('/:msisdn/billing/latest', resolveCustomerByMsisdn(), asyncHandler(async (req, res) => {
+  const result = await getLatestBill(req.customerId);
   return apiResponse(res, 200, result, req.requestId);
 }));
 
-router.get('/:id/bills', asyncHandler(async (req, res) => {
-  const result = await getBills(req.params.id, req.query.status);
+router.get('/:msisdn/bills', resolveCustomerByMsisdn(), asyncHandler(async (req, res) => {
+  const result = await getBills(req.customerId, req.query.status);
   return apiResponse(res, 200, { items: result }, req.requestId);
 }));
 
-router.get('/:id/360', asyncHandler(async (req, res) => {
-  const result = await getCustomer360(req.params.id);
+router.get('/:msisdn/360', resolveCustomerByMsisdn(), asyncHandler(async (req, res) => {
+  const result = await getCustomer360(req.customerId);
   return apiResponse(res, 200, result, req.requestId);
 }));
 
-router.get('/:id/offers', asyncHandler(async (req, res) => {
-  const result = await getOffers(req.params.id);
+router.get('/:msisdn/offers', resolveCustomerByMsisdn(), asyncHandler(async (req, res) => {
+  const result = await getOffers(req.customerId);
   return apiResponse(res, 200, { offers: result }, req.requestId);
 }));
 
-router.get('/:id/next-best-action', asyncHandler(async (req, res) => {
-  const result = await getNextBestAction(req.params.id);
+router.get('/:msisdn/next-best-action', resolveCustomerByMsisdn(), asyncHandler(async (req, res) => {
+  const result = await getNextBestAction(req.customerId);
   return apiResponse(res, 200, result, req.requestId);
 }));
 
-router.post('/:id/plan-change', idempotency, validate(planChangeSchema), asyncHandler(async (req, res) => {
-  const result = await changePlan(req.params.id, req.body.targetPlanCode, req.body.consent, req.body.channel, req.idempotencyKey);
+router.post('/:msisdn/plan-change', resolveCustomerByMsisdn(), idempotency, validate(planChangeSchema), asyncHandler(async (req, res) => {
+  const result = await changePlan(req.customerId, req.body.targetPlanCode, req.body.consent, req.body.channel, req.idempotencyKey);
   return apiResponse(res, 200, result, req.requestId);
 }));
 

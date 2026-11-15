@@ -90,11 +90,11 @@
               { "key": "Authorization", "value": "Bearer {{token}}" }
             ],
             "url": {
-              "raw": "http://localhost:3000/api/v1/customers/{{customerId}}/profile",
+              "raw": "http://localhost:3000/api/v1/customers/{{msisdn}}/profile",
               "protocol": "http",
               "host": ["localhost"],
               "port": "3000",
-              "path": ["api", "v1", "customers", "{{customerId}}", "profile"]
+              "path": ["api", "v1", "customers", "{{msisdn}}", "profile"]
             }
           }
         },
@@ -106,11 +106,11 @@
               { "key": "Authorization", "value": "Bearer {{token}}" }
             ],
             "url": {
-              "raw": "http://localhost:3000/api/v1/customers/{{customerId}}/plan",
+              "raw": "http://localhost:3000/api/v1/customers/{{msisdn}}/plan",
               "protocol": "http",
               "host": ["localhost"],
               "port": "3000",
-              "path": ["api", "v1", "customers", "{{customerId}}", "plan"]
+              "path": ["api", "v1", "customers", "{{msisdn}}", "plan"]
             }
           }
         },
@@ -122,11 +122,11 @@
               { "key": "Authorization", "value": "Bearer {{token}}" }
             ],
             "url": {
-              "raw": "http://localhost:3000/api/v1/customers/{{customerId}}/usage",
+              "raw": "http://localhost:3000/api/v1/customers/{{msisdn}}/usage",
               "protocol": "http",
               "host": ["localhost"],
               "port": "3000",
-              "path": ["api", "v1", "customers", "{{customerId}}", "usage"]
+              "path": ["api", "v1", "customers", "{{msisdn}}", "usage"]
             }
           }
         },
@@ -138,11 +138,11 @@
               { "key": "Authorization", "value": "Bearer {{token}}" }
             ],
             "url": {
-              "raw": "http://localhost:3000/api/v1/customers/{{customerId}}/billing/latest",
+              "raw": "http://localhost:3000/api/v1/customers/{{msisdn}}/billing/latest",
               "protocol": "http",
               "host": ["localhost"],
               "port": "3000",
-              "path": ["api", "v1", "customers", "{{customerId}}", "billing", "latest"]
+              "path": ["api", "v1", "customers", "{{msisdn}}", "billing", "latest"]
             }
           }
         },
@@ -154,11 +154,11 @@
               { "key": "Authorization", "value": "Bearer {{token}}" }
             ],
             "url": {
-              "raw": "http://localhost:3000/api/v1/customers/{{customerId}}/bills",
+              "raw": "http://localhost:3000/api/v1/customers/{{msisdn}}/bills",
               "protocol": "http",
               "host": ["localhost"],
               "port": "3000",
-              "path": ["api", "v1", "customers", "{{customerId}}", "bills"]
+              "path": ["api", "v1", "customers", "{{msisdn}}", "bills"]
             }
           }
         },
@@ -170,11 +170,11 @@
               { "key": "Authorization", "value": "Bearer {{token}}" }
             ],
             "url": {
-              "raw": "http://localhost:3000/api/v1/customers/{{customerId}}/360",
+              "raw": "http://localhost:3000/api/v1/customers/{{msisdn}}/360",
               "protocol": "http",
               "host": ["localhost"],
               "port": "3000",
-              "path": ["api", "v1", "customers", "{{customerId}}", "360"]
+              "path": ["api", "v1", "customers", "{{msisdn}}", "360"]
             }
           }
         },
@@ -186,11 +186,11 @@
               { "key": "Authorization", "value": "Bearer {{token}}" }
             ],
             "url": {
-              "raw": "http://localhost:3000/api/v1/customers/{{customerId}}/offers",
+              "raw": "http://localhost:3000/api/v1/customers/{{msisdn}}/offers",
               "protocol": "http",
               "host": ["localhost"],
               "port": "3000",
-              "path": ["api", "v1", "customers", "{{customerId}}", "offers"]
+              "path": ["api", "v1", "customers", "{{msisdn}}", "offers"]
             }
           }
         },
@@ -202,11 +202,11 @@
               { "key": "Authorization", "value": "Bearer {{token}}" }
             ],
             "url": {
-              "raw": "http://localhost:3000/api/v1/customers/{{customerId}}/next-best-action",
+              "raw": "http://localhost:3000/api/v1/customers/{{msisdn}}/next-best-action",
               "protocol": "http",
               "host": ["localhost"],
               "port": "3000",
-              "path": ["api", "v1", "customers", "{{customerId}}", "next-best-action"]
+              "path": ["api", "v1", "customers", "{{msisdn}}", "next-best-action"]
             }
           }
         },
@@ -224,11 +224,11 @@
               "raw": "{\n  \"targetPlanCode\": \"5G_MAX\",\n  \"consent\": true,\n  \"channel\": \"IVR\"\n}"
             },
             "url": {
-              "raw": "http://localhost:3000/api/v1/customers/{{customerId}}/plan-change",
+              "raw": "http://localhost:3000/api/v1/customers/{{msisdn}}/plan-change",
               "protocol": "http",
               "host": ["localhost"],
               "port": "3000",
-              "path": ["api", "v1", "customers", "{{customerId}}", "plan-change"]
+              "path": ["api", "v1", "customers", "{{msisdn}}", "plan-change"]
             }
           }
         }
@@ -271,11 +271,11 @@
               "raw": "{\n  \"enabled\": true\n}"
             },
             "url": {
-              "raw": "http://localhost:3000/api/v1/customers/{{customerId}}/autopay",
+              "raw": "http://localhost:3000/api/v1/customers/{{msisdn}}/autopay",
               "protocol": "http",
               "host": ["localhost"],
               "port": "3000",
-              "path": ["api", "v1", "customers", "{{customerId}}", "autopay"]
+              "path": ["api", "v1", "customers", "{{msisdn}}", "autopay"]
             }
           }
         },
@@ -287,11 +287,11 @@
               { "key": "Authorization", "value": "Bearer {{token}}" }
             ],
             "url": {
-              "raw": "http://localhost:3000/api/v1/customers/{{customerId}}/autopay",
+              "raw": "http://localhost:3000/api/v1/customers/{{msisdn}}/autopay",
               "protocol": "http",
               "host": ["localhost"],
               "port": "3000",
-              "path": ["api", "v1", "customers", "{{customerId}}", "autopay"]
+              "path": ["api", "v1", "customers", "{{msisdn}}", "autopay"]
             }
           }
         }
@@ -310,7 +310,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"customerId\": \"{{customerId}}\",\n  \"channel\": \"SMS\"\n}"
+              "raw": "{\n  \"msisdn\": \"{{msisdn}}\",\n  \"channel\": \"SMS\"\n}"
             },
             "url": {
               "raw": "http://localhost:3000/api/v1/identity/otp/send",
@@ -331,7 +331,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"customerId\": \"{{customerId}}\",\n  \"code\": \"123456\"\n}"
+              "raw": "{\n  \"msisdn\": \"{{msisdn}}\",\n  \"code\": \"123456\"\n}"
             },
             "url": {
               "raw": "http://localhost:3000/api/v1/identity/otp/validate",
@@ -352,7 +352,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"customerId\": \"{{customerId}}\",\n  \"method\": \"OTP\",\n  \"value\": \"OTP\"\n}"
+              "raw": "{\n  \"msisdn\": \"{{msisdn}}\",\n  \"method\": \"OTP\",\n  \"value\": \"OTP\"\n}"
             },
             "url": {
               "raw": "http://localhost:3000/api/v1/identity/verify",
@@ -392,7 +392,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"intent\": \"CHECK_BILL\",\n  \"customerId\": \"{{customerId}}\",\n  \"params\": {\n    \"billStatus\": \"OVERDUE\"\n  }\n}"
+              "raw": "{\n  \"intent\": \"CHECK_BILL\",\n  \"msisdn\": \"{{msisdn}}\",\n  \"params\": {\n    \"billStatus\": \"OVERDUE\"\n  }\n}"
             },
             "url": {
               "raw": "http://localhost:3000/api/v1/chatbot/fulfillment",
@@ -416,11 +416,11 @@
               { "key": "Authorization", "value": "Bearer {{token}}" }
             ],
             "url": {
-              "raw": "http://localhost:3000/api/v1/customers/{{customerId}}/sim",
+              "raw": "http://localhost:3000/api/v1/customers/{{msisdn}}/sim",
               "protocol": "http",
               "host": ["localhost"],
               "port": "3000",
-              "path": ["api", "v1", "customers", "{{customerId}}", "sim"]
+              "path": ["api", "v1", "customers", "{{msisdn}}", "sim"]
             }
           }
         },
@@ -432,11 +432,11 @@
               { "key": "Authorization", "value": "Bearer {{token}}" }
             ],
             "url": {
-              "raw": "http://localhost:3000/api/v1/customers/{{customerId}}/sim-replacement/eligibility",
+              "raw": "http://localhost:3000/api/v1/customers/{{msisdn}}/sim-replacement/eligibility",
               "protocol": "http",
               "host": ["localhost"],
               "port": "3000",
-              "path": ["api", "v1", "customers", "{{customerId}}", "sim-replacement", "eligibility"]
+              "path": ["api", "v1", "customers", "{{msisdn}}", "sim-replacement", "eligibility"]
             }
           }
         },
@@ -451,7 +451,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"customerId\": \"{{customerId}}\",\n  \"reason\": \"LOST\",\n  \"simType\": \"PHYSICAL\",\n  \"deliveryAddress\": {\n    \"street\": \"Via Roma 45\",\n    \"city\": \"Milan\",\n    \"postalCode\": \"20100\",\n    \"province\": \"MI\"\n  }\n}"
+              "raw": "{\n  \"msisdn\": \"{{msisdn}}\",\n  \"reason\": \"LOST\",\n  \"simType\": \"PHYSICAL\",\n  \"deliveryAddress\": {\n    \"street\": \"Via Roma 45\",\n    \"city\": \"Milan\",\n    \"postalCode\": \"20100\",\n    \"province\": \"MI\"\n  }\n}"
             },
             "url": {
               "raw": "http://localhost:3000/api/v1/sim-replacement",
@@ -493,7 +493,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"customerId\": \"{{customerId}}\",\n  \"channel\": \"VOICE\",\n  \"subject\": \"Billing question\",\n  \"description\": \"Need billing summary.\",\n  \"priority\": \"HIGH\"\n}"
+              "raw": "{\n  \"msisdn\": \"{{msisdn}}\",\n  \"channel\": \"VOICE\",\n  \"subject\": \"Billing question\",\n  \"description\": \"Need billing summary.\",\n  \"priority\": \"HIGH\"\n}"
             },
             "url": {
               "raw": "http://localhost:3000/api/v1/cases",
@@ -521,18 +521,18 @@
           }
         },
         {
-          "name": "Get case by id",
+          "name": "Get case by case number",
           "request": {
             "method": "GET",
             "header": [
               { "key": "Authorization", "value": "Bearer {{token}}" }
             ],
             "url": {
-              "raw": "http://localhost:3000/api/v1/cases/{{caseId}}",
+              "raw": "http://localhost:3000/api/v1/cases/{{caseNumber}}",
               "protocol": "http",
               "host": ["localhost"],
               "port": "3000",
-              "path": ["api", "v1", "cases", "{{caseId}}"]
+              "path": ["api", "v1", "cases", "{{caseNumber}}"]
             }
           }
         },
@@ -549,11 +549,11 @@
               "raw": "{\n  \"status\": \"IN_PROGRESS\",\n  \"priority\": \"MEDIUM\"\n}"
             },
             "url": {
-              "raw": "http://localhost:3000/api/v1/cases/{{caseId}}",
+              "raw": "http://localhost:3000/api/v1/cases/{{caseNumber}}",
               "protocol": "http",
               "host": ["localhost"],
               "port": "3000",
-              "path": ["api", "v1", "cases", "{{caseId}}"]
+              "path": ["api", "v1", "cases", "{{caseNumber}}"]
             }
           }
         },
@@ -570,11 +570,11 @@
               "raw": "{\n  \"text\": \"Customer confirmed billing summary is needed.\",\n  \"author\": \"agent@sprinklr.local\"\n}"
             },
             "url": {
-              "raw": "http://localhost:3000/api/v1/cases/{{caseId}}/notes",
+              "raw": "http://localhost:3000/api/v1/cases/{{caseNumber}}/notes",
               "protocol": "http",
               "host": ["localhost"],
               "port": "3000",
-              "path": ["api", "v1", "cases", "{{caseId}}", "notes"]
+              "path": ["api", "v1", "cases", "{{caseNumber}}", "notes"]
             }
           }
         },
@@ -586,11 +586,11 @@
               { "key": "Authorization", "value": "Bearer {{token}}" }
             ],
             "url": {
-              "raw": "http://localhost:3000/api/v1/cases/{{caseId}}/sla",
+              "raw": "http://localhost:3000/api/v1/cases/{{caseNumber}}/sla",
               "protocol": "http",
               "host": ["localhost"],
               "port": "3000",
-              "path": ["api", "v1", "cases", "{{caseId}}", "sla"]
+              "path": ["api", "v1", "cases", "{{caseNumber}}", "sla"]
             }
           }
         },
@@ -602,11 +602,11 @@
               { "key": "Authorization", "value": "Bearer {{token}}" }
             ],
             "url": {
-              "raw": "http://localhost:3000/api/v1/customers/{{customerId}}/interactions",
+              "raw": "http://localhost:3000/api/v1/customers/{{msisdn}}/interactions",
               "protocol": "http",
               "host": ["localhost"],
               "port": "3000",
-              "path": ["api", "v1", "customers", "{{customerId}}", "interactions"]
+              "path": ["api", "v1", "customers", "{{msisdn}}", "interactions"]
             }
           }
         },
@@ -620,7 +620,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"customerId\": \"{{customerId}}\",\n  \"channel\": \"CHAT\",\n  \"direction\": \"INBOUND\",\n  \"summary\": \"Customer asked about plan options.\"\n}"
+              "raw": "{\n  \"msisdn\": \"{{msisdn}}\",\n  \"channel\": \"CHAT\",\n  \"direction\": \"INBOUND\",\n  \"summary\": \"Customer asked about plan options.\"\n}"
             },
             "url": {
               "raw": "http://localhost:3000/api/v1/interactions",
@@ -757,7 +757,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"customerId\": \"{{customerId}}\",\n  \"channel\": \"SMS\",\n  \"message\": \"Your bill has been updated.\"\n}"
+              "raw": "{\n  \"msisdn\": \"{{msisdn}}\",\n  \"channel\": \"SMS\",\n  \"template\": \"Your bill has been updated.\"\n}"
             },
             "url": {
               "raw": "http://localhost:3000/api/v1/messages/send",
@@ -777,7 +777,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"campaignId\": \"{{campaignId}}\",\n  \"messageId\": \"msg-001\",\n  \"status\": \"DELIVERED\",\n  \"recipient\": \"3331239821\"\n}"
+              "raw": "{\n  \"campaignId\": \"{{campaignId}}\",\n  \"msisdn\": \"{{msisdn}}\",\n  \"status\": \"DELIVERED\"\n}"
             },
             "url": {
               "raw": "http://localhost:3000/api/v1/webhooks/delivery",
@@ -797,7 +797,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"campaignId\": \"{{campaignId}}\",\n  \"messageId\": \"msg-001\",\n  \"response\": \"STOP\",\n  \"recipient\": \"3331239821\"\n}"
+              "raw": "{\n  \"campaignId\": \"{{campaignId}}\",\n  \"msisdn\": \"{{msisdn}}\",\n  \"responseText\": \"STOP\"\n}"
             },
             "url": {
               "raw": "http://localhost:3000/api/v1/webhooks/response",
@@ -813,9 +813,8 @@
   ],
   "variable": [
     { "key": "token", "value": "" },
-    { "key": "customerId", "value": "" },
     { "key": "billId", "value": "" },
-    { "key": "caseId", "value": "" },
+    { "key": "caseNumber", "value": "" },
     { "key": "segmentId", "value": "" },
     { "key": "campaignId", "value": "" },
     { "key": "requestCode", "value": "" },

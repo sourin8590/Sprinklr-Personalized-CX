@@ -80,11 +80,19 @@ Authorization: Bearer <token>
 
 ### Customer and billing
 - GET /api/v1/customers/lookup?msisdn=3331239821
-- GET /api/v1/customers/:id/profile
-- GET /api/v1/customers/:id/plan
-- GET /api/v1/customers/:id/billing/latest
-- GET /api/v1/customers/:id/offers
-- POST /api/v1/customers/:id/plan-change
+- GET /api/v1/customers/3331239821/profile
+- GET /api/v1/customers/3331239821/plan
+- GET /api/v1/customers/3331239821/usage
+- GET /api/v1/customers/3331239821/billing/latest
+- GET /api/v1/customers/3331239821/bills
+- GET /api/v1/customers/3331239821/360
+- GET /api/v1/customers/3331239821/offers
+- GET /api/v1/customers/3331239821/next-best-action
+- POST /api/v1/customers/3331239821/plan-change
+- GET /api/v1/customers/3331239821/autopay
+- POST /api/v1/customers/3331239821/autopay
+- GET /api/v1/customers/3331239821/sim
+- GET /api/v1/customers/3331239821/interactions
 
 ### Identity and IVR
 - POST /api/v1/identity/otp/send
@@ -94,11 +102,13 @@ Authorization: Bearer <token>
 - POST /api/v1/chatbot/fulfillment
 
 ### SIM and service operations
-- GET /api/v1/customers/:id/sim-replacement/eligibility
+- GET /api/v1/customers/3331239821/sim-replacement/eligibility
 - POST /api/v1/sim-replacement
 - GET /api/v1/sim-replacement/:requestCode
 - POST /api/v1/cases
 - GET /api/v1/cases
+
+Customer-specific paths and request bodies identify the customer with their mobile number (`msisdn`) instead of the database ID. For example, customer-specific POST requests should send `"msisdn": "3331239821"`. Case detail, update, note, and SLA routes use the human-readable `caseNumber` (for example, `CASE-000045`); other resource identifiers remain unchanged.
 
 ### Outbound and campaigns
 - POST /api/v1/segments
@@ -112,13 +122,13 @@ Authorization: Bearer <token>
 | Sprinklr capability | Example backend route | Purpose |
 | --- | --- | --- |
 | Voice IVR agent handoff | GET /api/v1/ivr/context | Return greeting, masked MSISDN, bill, and usage context for ANI lookup |
-| Guided workflow | GET /api/v1/customers/:id/sim-replacement/eligibility + POST /api/v1/sim-replacement | SIM replacement approval and tracking |
-| Sprinklr Service desktop | GET /api/v1/customers/:id/360 + GET /api/v1/customers/:id/next-best-action | Customer 360 and recommended actions |
+| Guided workflow | GET /api/v1/customers/3331239821/sim-replacement/eligibility + POST /api/v1/sim-replacement | SIM replacement approval and tracking |
+| Sprinklr Service desktop | GET /api/v1/customers/3331239821/360 + GET /api/v1/customers/3331239821/next-best-action | Customer 360 and recommended actions |
 | Agentic AI chatbot | POST /api/v1/chatbot/fulfillment | Respond to intent-based conversational requests |
 | Outbound campaign orchestration | POST /api/v1/segments + POST /api/v1/campaigns + POST /api/v1/campaigns/:id/launch | High-volume customer targeting and campaign execution |
 | Identity verification | POST /api/v1/identity/otp/send + POST /api/v1/identity/otp/validate + POST /api/v1/identity/verify | Validate customer identity before sensitive actions |
-| Billing and plan change | POST /api/v1/customers/:id/plan-change | Manage plan upgrades with consent and idempotency controls |
-| Case management | POST /api/v1/cases + GET /api/v1/cases/:id | Record and track customer incidents |
+| Billing and plan change | POST /api/v1/customers/3331239821/plan-change | Manage plan upgrades with consent and idempotency controls |
+| Case management | POST /api/v1/cases + GET /api/v1/cases/:caseNumber | Record and track customer incidents |
 
 ## Notes
 

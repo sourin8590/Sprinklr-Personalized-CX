@@ -33,14 +33,14 @@ async function listCases({ customerId, status, page = 1, limit = 20 }) {
   return { items: docs, total, page, limit };
 }
 
-async function getCaseById(id) {
-  const doc = await Case.findById(id).populate('assignedAgent').lean();
+async function getCaseByNumber(caseNumber) {
+  const doc = await Case.findOne({ caseNumber }).populate('assignedAgent').lean();
   if (!doc) throw new AppError(404, 'NOT_FOUND', 'Case not found');
   return doc;
 }
 
-async function updateCase(id, payload) {
-  const doc = await Case.findById(id);
+async function updateCaseByNumber(caseNumber, payload) {
+  const doc = await Case.findOne({ caseNumber });
   if (!doc) throw new AppError(404, 'NOT_FOUND', 'Case not found');
 
   if (payload.assignedAgentId) {
@@ -57,8 +57,8 @@ async function updateCase(id, payload) {
   return doc;
 }
 
-async function addCaseNote(id, text, author) {
-  const doc = await Case.findById(id);
+async function addCaseNoteByNumber(caseNumber, text, author) {
+  const doc = await Case.findOne({ caseNumber });
   if (!doc) throw new AppError(404, 'NOT_FOUND', 'Case not found');
   doc.notes.push({ author, text, createdAt: new Date() });
   await doc.save();
@@ -66,11 +66,11 @@ async function addCaseNote(id, text, author) {
   return doc;
 }
 
-async function getCaseSla(id) {
-  const doc = await Case.findById(id).lean();
+async function getCaseSlaByNumber(caseNumber) {
+  const doc = await Case.findOne({ caseNumber }).lean();
   if (!doc) throw new AppError(404, 'NOT_FOUND', 'Case not found');
   return {
-    caseId: doc._id,
+    caseNumber: doc.caseNumber,
     dueAt: doc.slaDueAt,
     status: doc.slaStatus,
     isBreached: doc.slaStatus === 'BREACHED',
@@ -81,10 +81,16 @@ async function listInteractions(customerId) {
   return Interaction.find({ customer: customerId }).sort({ createdAt: -1 }).lean();
 }
 
-async function createInteraction({ customerId, caseId, channel, direction, summary, transcriptRef }) {
+async function createInteraction({ customerId, caseNumber, channel, direction, summary, transcriptRef }) {
   const customer = await Customer.findById(customerId);
   if (!customer) throw new AppError(404, 'NOT_FOUND', 'Customer not found');
-  const interaction = await Interaction.create({ customer: customerId, case: caseId, channel, direction, summary, transcriptRef });
+  let caseObjectId;
+  if (caseNumber) {
+    const caseDoc = await Case.findOne({ caseNumber }).select('_id').lean();
+    if (!caseDoc) throw new AppError(404, 'NOT_FOUND', 'Case not found');
+    caseObjectId = caseDoc._id;
+  }
+  const interaction = await Interaction.create({ customer: customerId, case: caseObjectId, channel, direction, summary, transcriptRef });
   await writeAuditLog({ action: 'INTERACTION_CREATED', entity: 'Interaction', entityId: interaction._id.toString(), payload: { customerId } });
   return interaction;
 }
@@ -106,7 +112,7 @@ async function escalateConversation({ customerId, intent, summary, context }) {
   return {
     queue: 'VIP_SUPPORT',
     handoff: {
-      caseId: caseDoc._id,
+      caseNumber: caseDoc.caseNumber,
       customerId,
       intent,
       context,
@@ -118,10 +124,10 @@ async function escalateConversation({ customerId, intent, summary, context }) {
 module.exports = {
   createCase,
   listCases,
-  getCaseById,
-  updateCase,
-  addCaseNote,
-  getCaseSla,
+  getCaseByNumber,
+  updateCaseByNumber,
+  addCaseNoteByNumber,
+  getCaseSlaByNumber,
   listInteractions,
   createInteraction,
   escalateConversation,
