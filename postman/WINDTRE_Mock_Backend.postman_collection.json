@@ -1,7 +1,7 @@
 {
   "info": {
     "name": "WINDTRE Mock Backend",
-    "description": "Requests follow the OpenAPI contract. Set baseUrl to the deployed API base or your local API base.",
+    "description": "Requests follow the OpenAPI contract and target the deployed Vercel API.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
@@ -16,7 +16,18 @@
               { "key": "Authorization", "value": "Bearer {{token}}" }
             ],
             "url": {
-              "raw": "{{baseUrl}}/health"
+              "raw": "https://sprinklr-personalized-cx.vercel.app/api/v1/health",
+              "protocol": "https",
+              "host": [
+                "sprinklr-personalized-cx",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "health"
+              ]
             }
           }
         },
@@ -32,7 +43,19 @@
               "raw": "{\n  \"client_id\": \"sprinklr-demo-client\",\n  \"client_secret\": \"windtre-demo-api-key-123\"\n}"
             },
             "url": {
-              "raw": "{{baseUrl}}/auth/token"
+              "raw": "https://sprinklr-personalized-cx.vercel.app/api/v1/auth/token",
+              "protocol": "https",
+              "host": [
+                "sprinklr-personalized-cx",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "token"
+              ]
             }
           }
         }
@@ -49,7 +72,18 @@
               { "key": "Authorization", "value": "Bearer {{token}}" }
             ],
             "url": {
-              "raw": "{{baseUrl}}/plans"
+              "raw": "https://sprinklr-personalized-cx.vercel.app/api/v1/plans",
+              "protocol": "https",
+              "host": [
+                "sprinklr-personalized-cx",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "plans"
+              ]
             }
           }
         },
@@ -61,9 +95,24 @@
               { "key": "Authorization", "value": "Bearer {{token}}" }
             ],
             "url": {
-              "raw": "{{baseUrl}}/customers/lookup?msisdn={{msisdn}}",
+              "raw": "https://sprinklr-personalized-cx.vercel.app/api/v1/customers/lookup?msisdn={{msisdn}}",
+              "protocol": "https",
+              "host": [
+                "sprinklr-personalized-cx",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "customers",
+                "lookup"
+              ],
               "query": [
-                { "key": "msisdn", "value": "{{msisdn}}" }
+                {
+                  "key": "msisdn",
+                  "value": "{{msisdn}}"
+                }
               ]
             }
           }
@@ -76,7 +125,20 @@
               { "key": "Authorization", "value": "Bearer {{token}}" }
             ],
             "url": {
-              "raw": "{{baseUrl}}/customers/{{msisdn}}/profile"
+              "raw": "https://sprinklr-personalized-cx.vercel.app/api/v1/customers/{{msisdn}}/profile",
+              "protocol": "https",
+              "host": [
+                "sprinklr-personalized-cx",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "customers",
+                "{{msisdn}}",
+                "profile"
+              ]
             }
           }
         },
@@ -88,7 +150,20 @@
               { "key": "Authorization", "value": "Bearer {{token}}" }
             ],
             "url": {
-              "raw": "{{baseUrl}}/customers/{{msisdn}}/plan"
+              "raw": "https://sprinklr-personalized-cx.vercel.app/api/v1/customers/{{msisdn}}/plan",
+              "protocol": "https",
+              "host": [
+                "sprinklr-personalized-cx",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "customers",
+                "{{msisdn}}",
+                "plan"
+              ]
             }
           }
         },
@@ -100,7 +175,20 @@
               { "key": "Authorization", "value": "Bearer {{token}}" }
             ],
             "url": {
-              "raw": "{{baseUrl}}/customers/{{msisdn}}/usage"
+              "raw": "https://sprinklr-personalized-cx.vercel.app/api/v1/customers/{{msisdn}}/usage",
+              "protocol": "https",
+              "host": [
+                "sprinklr-personalized-cx",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "customers",
+                "{{msisdn}}",
+                "usage"
+              ]
             }
           }
         },
@@ -112,7 +200,21 @@
               { "key": "Authorization", "value": "Bearer {{token}}" }
             ],
             "url": {
-              "raw": "{{baseUrl}}/customers/{{msisdn}}/billing/latest"
+              "raw": "https://sprinklr-personalized-cx.vercel.app/api/v1/customers/{{msisdn}}/billing/latest",
+              "protocol": "https",
+              "host": [
+                "sprinklr-personalized-cx",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "customers",
+                "{{msisdn}}",
+                "billing",
+                "latest"
+              ]
             }
           }
         },
@@ -124,9 +226,25 @@
               { "key": "Authorization", "value": "Bearer {{token}}" }
             ],
             "url": {
-              "raw": "{{baseUrl}}/customers/{{msisdn}}/bills?status=DUE",
+              "raw": "https://sprinklr-personalized-cx.vercel.app/api/v1/customers/{{msisdn}}/bills?status=DUE",
+              "protocol": "https",
+              "host": [
+                "sprinklr-personalized-cx",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "customers",
+                "{{msisdn}}",
+                "bills"
+              ],
               "query": [
-                { "key": "status", "value": "DUE" }
+                {
+                  "key": "status",
+                  "value": "DUE"
+                }
               ]
             }
           }
@@ -139,7 +257,20 @@
               { "key": "Authorization", "value": "Bearer {{token}}" }
             ],
             "url": {
-              "raw": "{{baseUrl}}/customers/{{msisdn}}/360"
+              "raw": "https://sprinklr-personalized-cx.vercel.app/api/v1/customers/{{msisdn}}/360",
+              "protocol": "https",
+              "host": [
+                "sprinklr-personalized-cx",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "customers",
+                "{{msisdn}}",
+                "360"
+              ]
             }
           }
         },
@@ -151,7 +282,20 @@
               { "key": "Authorization", "value": "Bearer {{token}}" }
             ],
             "url": {
-              "raw": "{{baseUrl}}/customers/{{msisdn}}/offers"
+              "raw": "https://sprinklr-personalized-cx.vercel.app/api/v1/customers/{{msisdn}}/offers",
+              "protocol": "https",
+              "host": [
+                "sprinklr-personalized-cx",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "customers",
+                "{{msisdn}}",
+                "offers"
+              ]
             }
           }
         },
@@ -163,7 +307,20 @@
               { "key": "Authorization", "value": "Bearer {{token}}" }
             ],
             "url": {
-              "raw": "{{baseUrl}}/customers/{{msisdn}}/next-best-action"
+              "raw": "https://sprinklr-personalized-cx.vercel.app/api/v1/customers/{{msisdn}}/next-best-action",
+              "protocol": "https",
+              "host": [
+                "sprinklr-personalized-cx",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "customers",
+                "{{msisdn}}",
+                "next-best-action"
+              ]
             }
           }
         },
@@ -181,7 +338,20 @@
               "raw": "{\n  \"targetPlanCode\": \"5G_MAX\",\n  \"consent\": true,\n  \"channel\": \"IVR\"\n}"
             },
             "url": {
-              "raw": "{{baseUrl}}/customers/{{msisdn}}/plan-change"
+              "raw": "https://sprinklr-personalized-cx.vercel.app/api/v1/customers/{{msisdn}}/plan-change",
+              "protocol": "https",
+              "host": [
+                "sprinklr-personalized-cx",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "customers",
+                "{{msisdn}}",
+                "plan-change"
+              ]
             }
           }
         }
@@ -203,7 +373,19 @@
               "raw": "{\n  \"billId\": \"{{billId}}\"\n}"
             },
             "url": {
-              "raw": "{{baseUrl}}/payments/link"
+              "raw": "https://sprinklr-personalized-cx.vercel.app/api/v1/payments/link",
+              "protocol": "https",
+              "host": [
+                "sprinklr-personalized-cx",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "payments",
+                "link"
+              ]
             }
           }
         },
@@ -220,7 +402,20 @@
               "raw": "{\n  \"enabled\": true\n}"
             },
             "url": {
-              "raw": "{{baseUrl}}/customers/{{msisdn}}/autopay"
+              "raw": "https://sprinklr-personalized-cx.vercel.app/api/v1/customers/{{msisdn}}/autopay",
+              "protocol": "https",
+              "host": [
+                "sprinklr-personalized-cx",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "customers",
+                "{{msisdn}}",
+                "autopay"
+              ]
             }
           }
         },
@@ -232,7 +427,20 @@
               { "key": "Authorization", "value": "Bearer {{token}}" }
             ],
             "url": {
-              "raw": "{{baseUrl}}/customers/{{msisdn}}/autopay"
+              "raw": "https://sprinklr-personalized-cx.vercel.app/api/v1/customers/{{msisdn}}/autopay",
+              "protocol": "https",
+              "host": [
+                "sprinklr-personalized-cx",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "customers",
+                "{{msisdn}}",
+                "autopay"
+              ]
             }
           }
         }
@@ -254,7 +462,20 @@
               "raw": "{\n  \"msisdn\": \"{{msisdn}}\",\n  \"channel\": \"SMS\"\n}"
             },
             "url": {
-              "raw": "{{baseUrl}}/identity/otp/send"
+              "raw": "https://sprinklr-personalized-cx.vercel.app/api/v1/identity/otp/send",
+              "protocol": "https",
+              "host": [
+                "sprinklr-personalized-cx",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "identity",
+                "otp",
+                "send"
+              ]
             }
           }
         },
@@ -271,7 +492,20 @@
               "raw": "{\n  \"msisdn\": \"{{msisdn}}\",\n  \"code\": \"123456\"\n}"
             },
             "url": {
-              "raw": "{{baseUrl}}/identity/otp/validate"
+              "raw": "https://sprinklr-personalized-cx.vercel.app/api/v1/identity/otp/validate",
+              "protocol": "https",
+              "host": [
+                "sprinklr-personalized-cx",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "identity",
+                "otp",
+                "validate"
+              ]
             }
           }
         },
@@ -288,7 +522,19 @@
               "raw": "{\n  \"msisdn\": \"{{msisdn}}\",\n  \"method\": \"OTP\",\n  \"value\": \"OTP\"\n}"
             },
             "url": {
-              "raw": "{{baseUrl}}/identity/verify"
+              "raw": "https://sprinklr-personalized-cx.vercel.app/api/v1/identity/verify",
+              "protocol": "https",
+              "host": [
+                "sprinklr-personalized-cx",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "identity",
+                "verify"
+              ]
             }
           }
         },
@@ -300,9 +546,24 @@
               { "key": "Authorization", "value": "Bearer {{token}}" }
             ],
             "url": {
-              "raw": "{{baseUrl}}/ivr/context?ani={{msisdn}}",
+              "raw": "https://sprinklr-personalized-cx.vercel.app/api/v1/ivr/context?ani={{msisdn}}",
+              "protocol": "https",
+              "host": [
+                "sprinklr-personalized-cx",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "ivr",
+                "context"
+              ],
               "query": [
-                { "key": "ani", "value": "{{msisdn}}" }
+                {
+                  "key": "ani",
+                  "value": "{{msisdn}}"
+                }
               ]
             }
           }
@@ -320,7 +581,19 @@
               "raw": "{\n  \"intent\": \"CHECK_BILL\",\n  \"msisdn\": \"{{msisdn}}\",\n  \"params\": {\n    \"billStatus\": \"OVERDUE\"\n  }\n}"
             },
             "url": {
-              "raw": "{{baseUrl}}/chatbot/fulfillment"
+              "raw": "https://sprinklr-personalized-cx.vercel.app/api/v1/chatbot/fulfillment",
+              "protocol": "https",
+              "host": [
+                "sprinklr-personalized-cx",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "chatbot",
+                "fulfillment"
+              ]
             }
           }
         }
@@ -337,7 +610,20 @@
               { "key": "Authorization", "value": "Bearer {{token}}" }
             ],
             "url": {
-              "raw": "{{baseUrl}}/customers/{{msisdn}}/sim"
+              "raw": "https://sprinklr-personalized-cx.vercel.app/api/v1/customers/{{msisdn}}/sim",
+              "protocol": "https",
+              "host": [
+                "sprinklr-personalized-cx",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "customers",
+                "{{msisdn}}",
+                "sim"
+              ]
             }
           }
         },
@@ -349,7 +635,21 @@
               { "key": "Authorization", "value": "Bearer {{token}}" }
             ],
             "url": {
-              "raw": "{{baseUrl}}/customers/{{msisdn}}/sim-replacement/eligibility"
+              "raw": "https://sprinklr-personalized-cx.vercel.app/api/v1/customers/{{msisdn}}/sim-replacement/eligibility",
+              "protocol": "https",
+              "host": [
+                "sprinklr-personalized-cx",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "customers",
+                "{{msisdn}}",
+                "sim-replacement",
+                "eligibility"
+              ]
             }
           }
         },
@@ -367,7 +667,18 @@
               "raw": "{\n  \"msisdn\": \"{{msisdn}}\",\n  \"reason\": \"LOST\",\n  \"simType\": \"PHYSICAL\",\n  \"deliveryAddress\": {\n    \"street\": \"Via Roma 45\",\n    \"city\": \"Milan\",\n    \"postalCode\": \"20100\",\n    \"province\": \"MI\"\n  }\n}"
             },
             "url": {
-              "raw": "{{baseUrl}}/sim-replacement"
+              "raw": "https://sprinklr-personalized-cx.vercel.app/api/v1/sim-replacement",
+              "protocol": "https",
+              "host": [
+                "sprinklr-personalized-cx",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "sim-replacement"
+              ]
             }
           }
         },
@@ -379,7 +690,19 @@
               { "key": "Authorization", "value": "Bearer {{token}}" }
             ],
             "url": {
-              "raw": "{{baseUrl}}/sim-replacement/{{requestCode}}"
+              "raw": "https://sprinklr-personalized-cx.vercel.app/api/v1/sim-replacement/{{requestCode}}",
+              "protocol": "https",
+              "host": [
+                "sprinklr-personalized-cx",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "sim-replacement",
+                "{{requestCode}}"
+              ]
             }
           }
         }
@@ -401,7 +724,18 @@
               "raw": "{\n  \"msisdn\": \"{{msisdn}}\",\n  \"channel\": \"VOICE\",\n  \"subject\": \"Billing question\",\n  \"description\": \"Need billing summary.\",\n  \"priority\": \"HIGH\"\n}"
             },
             "url": {
-              "raw": "{{baseUrl}}/cases"
+              "raw": "https://sprinklr-personalized-cx.vercel.app/api/v1/cases",
+              "protocol": "https",
+              "host": [
+                "sprinklr-personalized-cx",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "cases"
+              ]
             }
           }
         },
@@ -413,12 +747,36 @@
               { "key": "Authorization", "value": "Bearer {{token}}" }
             ],
             "url": {
-              "raw": "{{baseUrl}}/cases?msisdn={{msisdn}}&page=1&limit=20",
+              "raw": "https://sprinklr-personalized-cx.vercel.app/api/v1/cases?msisdn={{msisdn}}&page=1&limit=20",
+              "protocol": "https",
+              "host": [
+                "sprinklr-personalized-cx",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "cases"
+              ],
               "query": [
-                { "key": "msisdn", "value": "{{msisdn}}" },
-                { "key": "status", "value": "OPEN", "disabled": true },
-                { "key": "page", "value": "1" },
-                { "key": "limit", "value": "20" }
+                {
+                  "key": "msisdn",
+                  "value": "{{msisdn}}"
+                },
+                {
+                  "key": "status",
+                  "value": "OPEN",
+                  "disabled": true
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "20"
+                }
               ]
             }
           }
@@ -431,7 +789,19 @@
               { "key": "Authorization", "value": "Bearer {{token}}" }
             ],
             "url": {
-              "raw": "{{baseUrl}}/cases/{{caseNumber}}"
+              "raw": "https://sprinklr-personalized-cx.vercel.app/api/v1/cases/{{caseNumber}}",
+              "protocol": "https",
+              "host": [
+                "sprinklr-personalized-cx",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "cases",
+                "{{caseNumber}}"
+              ]
             }
           }
         },
@@ -448,7 +818,19 @@
               "raw": "{\n  \"status\": \"IN_PROGRESS\",\n  \"priority\": \"MEDIUM\"\n}"
             },
             "url": {
-              "raw": "{{baseUrl}}/cases/{{caseNumber}}"
+              "raw": "https://sprinklr-personalized-cx.vercel.app/api/v1/cases/{{caseNumber}}",
+              "protocol": "https",
+              "host": [
+                "sprinklr-personalized-cx",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "cases",
+                "{{caseNumber}}"
+              ]
             }
           }
         },
@@ -465,7 +847,20 @@
               "raw": "{\n  \"text\": \"Customer confirmed billing summary is needed.\",\n  \"author\": \"agent@sprinklr.local\"\n}"
             },
             "url": {
-              "raw": "{{baseUrl}}/cases/{{caseNumber}}/notes"
+              "raw": "https://sprinklr-personalized-cx.vercel.app/api/v1/cases/{{caseNumber}}/notes",
+              "protocol": "https",
+              "host": [
+                "sprinklr-personalized-cx",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "cases",
+                "{{caseNumber}}",
+                "notes"
+              ]
             }
           }
         },
@@ -477,7 +872,20 @@
               { "key": "Authorization", "value": "Bearer {{token}}" }
             ],
             "url": {
-              "raw": "{{baseUrl}}/cases/{{caseNumber}}/sla"
+              "raw": "https://sprinklr-personalized-cx.vercel.app/api/v1/cases/{{caseNumber}}/sla",
+              "protocol": "https",
+              "host": [
+                "sprinklr-personalized-cx",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "cases",
+                "{{caseNumber}}",
+                "sla"
+              ]
             }
           }
         },
@@ -489,7 +897,20 @@
               { "key": "Authorization", "value": "Bearer {{token}}" }
             ],
             "url": {
-              "raw": "{{baseUrl}}/customers/{{msisdn}}/interactions"
+              "raw": "https://sprinklr-personalized-cx.vercel.app/api/v1/customers/{{msisdn}}/interactions",
+              "protocol": "https",
+              "host": [
+                "sprinklr-personalized-cx",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "customers",
+                "{{msisdn}}",
+                "interactions"
+              ]
             }
           }
         },
@@ -506,7 +927,18 @@
               "raw": "{\n  \"msisdn\": \"{{msisdn}}\",\n  \"channel\": \"CHAT\",\n  \"direction\": \"INBOUND\",\n  \"summary\": \"Customer asked about plan options.\"\n}"
             },
             "url": {
-              "raw": "{{baseUrl}}/interactions"
+              "raw": "https://sprinklr-personalized-cx.vercel.app/api/v1/interactions",
+              "protocol": "https",
+              "host": [
+                "sprinklr-personalized-cx",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "interactions"
+              ]
             }
           }
         },
@@ -523,7 +955,19 @@
               "raw": "{\n  \"msisdn\": \"{{msisdn}}\",\n  \"intent\": \"SPEAK_TO_AGENT\",\n  \"summary\": \"Customer requested an agent.\",\n  \"context\": {\n    \"channel\": \"CHAT\"\n  }\n}"
             },
             "url": {
-              "raw": "{{baseUrl}}/conversations/escalate"
+              "raw": "https://sprinklr-personalized-cx.vercel.app/api/v1/conversations/escalate",
+              "protocol": "https",
+              "host": [
+                "sprinklr-personalized-cx",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "conversations",
+                "escalate"
+              ]
             }
           }
         }
@@ -545,7 +989,18 @@
               "raw": "{\n  \"name\": \"VIP_BILLING\",\n  \"ruleType\": \"OVERDUE\",\n  \"rule\": {\n    \"overdue\": true\n  }\n}"
             },
             "url": {
-              "raw": "{{baseUrl}}/segments"
+              "raw": "https://sprinklr-personalized-cx.vercel.app/api/v1/segments",
+              "protocol": "https",
+              "host": [
+                "sprinklr-personalized-cx",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "segments"
+              ]
             }
           }
         },
@@ -557,7 +1012,20 @@
               { "key": "Authorization", "value": "Bearer {{token}}" }
             ],
             "url": {
-              "raw": "{{baseUrl}}/segments/{{segmentId}}/members"
+              "raw": "https://sprinklr-personalized-cx.vercel.app/api/v1/segments/{{segmentId}}/members",
+              "protocol": "https",
+              "host": [
+                "sprinklr-personalized-cx",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "segments",
+                "{{segmentId}}",
+                "members"
+              ]
             }
           }
         },
@@ -574,7 +1042,18 @@
               "raw": "{\n  \"name\": \"Late bill reminder\",\n  \"channel\": \"SMS\",\n  \"segmentId\": \"{{segmentId}}\",\n  \"template\": \"Hi {{name}}, your bill is due.\"\n}"
             },
             "url": {
-              "raw": "{{baseUrl}}/campaigns"
+              "raw": "https://sprinklr-personalized-cx.vercel.app/api/v1/campaigns",
+              "protocol": "https",
+              "host": [
+                "sprinklr-personalized-cx",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "campaigns"
+              ]
             }
           }
         },
@@ -586,7 +1065,20 @@
               { "key": "Authorization", "value": "Bearer {{token}}" }
             ],
             "url": {
-              "raw": "{{baseUrl}}/campaigns/{{campaignId}}/launch"
+              "raw": "https://sprinklr-personalized-cx.vercel.app/api/v1/campaigns/{{campaignId}}/launch",
+              "protocol": "https",
+              "host": [
+                "sprinklr-personalized-cx",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "campaigns",
+                "{{campaignId}}",
+                "launch"
+              ]
             }
           }
         },
@@ -598,7 +1090,20 @@
               { "key": "Authorization", "value": "Bearer {{token}}" }
             ],
             "url": {
-              "raw": "{{baseUrl}}/campaigns/{{campaignId}}/messages"
+              "raw": "https://sprinklr-personalized-cx.vercel.app/api/v1/campaigns/{{campaignId}}/messages",
+              "protocol": "https",
+              "host": [
+                "sprinklr-personalized-cx",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "campaigns",
+                "{{campaignId}}",
+                "messages"
+              ]
             }
           }
         },
@@ -615,7 +1120,19 @@
               "raw": "{\n  \"msisdn\": \"{{msisdn}}\",\n  \"channel\": \"SMS\",\n  \"template\": \"Your bill has been updated.\"\n}"
             },
             "url": {
-              "raw": "{{baseUrl}}/messages/send"
+              "raw": "https://sprinklr-personalized-cx.vercel.app/api/v1/messages/send",
+              "protocol": "https",
+              "host": [
+                "sprinklr-personalized-cx",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "messages",
+                "send"
+              ]
             }
           }
         },
@@ -631,7 +1148,19 @@
               "raw": "{\n  \"campaignId\": \"{{campaignId}}\",\n  \"msisdn\": \"{{msisdn}}\",\n  \"status\": \"DELIVERED\"\n}"
             },
             "url": {
-              "raw": "{{baseUrl}}/webhooks/delivery"
+              "raw": "https://sprinklr-personalized-cx.vercel.app/api/v1/webhooks/delivery",
+              "protocol": "https",
+              "host": [
+                "sprinklr-personalized-cx",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "webhooks",
+                "delivery"
+              ]
             }
           }
         },
@@ -647,7 +1176,19 @@
               "raw": "{\n  \"campaignId\": \"{{campaignId}}\",\n  \"msisdn\": \"{{msisdn}}\",\n  \"responseText\": \"STOP\"\n}"
             },
             "url": {
-              "raw": "{{baseUrl}}/webhooks/response"
+              "raw": "https://sprinklr-personalized-cx.vercel.app/api/v1/webhooks/response",
+              "protocol": "https",
+              "host": [
+                "sprinklr-personalized-cx",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "webhooks",
+                "response"
+              ]
             }
           }
         }
@@ -655,7 +1196,6 @@
     }
   ],
   "variable": [
-    { "key": "baseUrl", "value": "https://sprinklr-personalized-cx.vercel.app/api/v1" },
     { "key": "token", "value": "" },
     { "key": "billId", "value": "" },
     { "key": "caseNumber", "value": "" },
