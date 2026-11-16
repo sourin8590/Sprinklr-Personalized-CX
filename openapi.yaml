@@ -4,7 +4,7 @@ info:
   version: 1.0.0
   description: Mock WINDTRE telecom API for Sprinklr training and demo environments.
 servers:
-  - url: https://sprinklr-personalized-cx.vercel.app/api/v1
+  - url: http://localhost:3000/api/v1
 paths:
   /auth/token:
     post:
@@ -29,6 +29,34 @@ paths:
                         $ref: '#/components/schemas/TokenData'
         '400':
           description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /customers/register:
+    post:
+      summary: Register a new customer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerRegistrationRequest'
+      responses:
+        '201':
+          description: Customer registered
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericSuccessResponse'
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: MSISDN is already registered
           content:
             application/json:
               schema:
@@ -135,6 +163,32 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericSuccessResponse'
+  /customers/{msisdn}/bills/by-issue-date:
+    get:
+      summary: List a customer's bills issued on a specific date
+      parameters:
+        - $ref: '#/components/parameters/CustomerMsisdn'
+        - in: query
+          name: issueDate
+          required: true
+          description: Calendar date in UTC.
+          schema:
+            type: string
+            format: date
+            example: '2026-11-01'
+      responses:
+        '200':
+          description: Customer bills issued on the requested date
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericSuccessResponse'
+        '400':
+          description: Invalid issue date
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
   /customers/{msisdn}/360:
     get:
       summary: Get a customer's 360-degree view
@@ -439,6 +493,37 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericSuccessResponse'
+  /payments/{billNumber}/status:
+    get:
+      summary: Check whether a bill payment was successful
+      description: Read-only. A payment is successful when the bill status is PAID.
+      parameters:
+        - in: path
+          name: billNumber
+          required: true
+          schema:
+            type: string
+            pattern: '^B-(?:[A-Fa-f0-9]{10}|\d{4}-\d{2})$'
+      responses:
+        '200':
+          description: Payment status
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessResponse'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/PaymentStatusData'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '400':
+          description: Invalid bill ID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
   /segments:
     post:
       summary: Create a campaign segment
@@ -799,6 +884,28 @@ components:
       properties:
         token:
           type: string
+    CustomerRegistrationRequest:
+      type: object
+      required: [msisdn, firstName, lastName]
+      properties:
+        msisdn:
+          type: string
+          pattern: '^\d{10}$'
+          example: '3331239832'
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+          format: email
+        tier:
+          type: string
+          enum: [STANDARD, PREMIUM]
+          default: STANDARD
+        language:
+          type: string
+          default: it
     CustomerLookupData:
       type: object
       required: [id, name, tier, msisdn, currentPlan]
@@ -1046,6 +1153,17 @@ components:
       properties:
         billId:
           type: string
+    PaymentStatusData:
+      type: object
+      required: [billNumber, status, paymentSuccessful]
+      properties:
+        billNumber:
+          type: string
+        status:
+          type: string
+          enum: [PAID, DUE, OVERDUE]
+        paymentSuccessful:
+          type: boolean
     SendMessageRequest:
       type: object
       required: [msisdn, channel, template]

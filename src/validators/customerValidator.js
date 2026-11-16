@@ -10,4 +10,13 @@ const planChangeSchema = Joi.object({
   channel: Joi.string().valid('IVR', 'CHAT', 'AGENT', 'WHATSAPP', 'SMS').required(),
 });
 
-module.exports = { lookupSchema, planChangeSchema };
+const registrationSchema = Joi.object({
+  msisdn: Joi.string().pattern(/^\d{10}$/).required(),
+  firstName: Joi.string().trim().min(1).required(),
+  lastName: Joi.string().trim().min(1).required(),
+  email: Joi.string().email().lowercase().trim(),
+  tier: Joi.string().valid('STANDARD', 'PREMIUM'),
+  language: Joi.string().trim().min(2),
+});
+
+module.exports = { lookupSchema, planChangeSchema, registrationSchema };

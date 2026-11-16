@@ -10,6 +10,7 @@ const Sim = require('../models/Sim');
 const AppError = require('../utils/AppError');
 const maskMsisdn = require('../utils/maskMsisdn');
 const { writeAuditLog } = require('./auditService');
+const { generateCode } = require('../utils/generateCode');
 
 async function lookupCustomerByMsisdn(msisdn) {
   const customer = await Customer.findOne({ msisdn }).lean();
@@ -67,6 +68,31 @@ async function getBills(customerId, status) {
   const query = { customer: customerId };
   if (status) query.status = status;
   return Bill.find(query).sort({ dueDate: -1 }).lean();
+}
+
+async function getBillsByIssueDate(customerId, issueDate) {
+  const start = new Date(`${issueDate}T00:00:00.000Z`);
+  const end = new Date(start);
+  end.setUTCDate(end.getUTCDate() + 1);
+  return Bill.find({ customer: customerId, issueDate: { $gte: start, $lt: end } })
+    .sort({ dueDate: -1 })
+    .lean();
+}
+
+async function registerCustomer(customerDetails) {
+  const customer = await Customer.create({
+    ...customerDetails,
+    customerCode: `C${generateCode(8)}`,
+  });
+
+  await writeAuditLog({
+    action: 'CUSTOMER_REGISTERED',
+    entity: 'Customer',
+    entityId: customer._id.toString(),
+    payload: { customerCode: customer.customerCode },
+  });
+
+  return customer;
 }
 
 async function getCustomer360(customerId) {
@@ -212,6 +238,8 @@ module.exports = {
   getCustomerUsage,
   getLatestBill,
   getBills,
+  getBillsByIssueDate,
+  registerCustomer,
   getCustomer360,
   getOffers,
   getNextBestAction,

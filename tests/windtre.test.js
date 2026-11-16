@@ -1,6 +1,7 @@
 const request = require('supertest');
 const { MongoMemoryServer } = require('mongodb-memory-server');
 const mongoose = require('mongoose');
+const Bill = require('../src/models/Bill');
 
 jest.setTimeout(120000);
 
@@ -69,6 +70,92 @@ describe('Windtre mock backend', () => {
 
     expect(cases.status).toBe(200);
     expect(cases.body.data.items.length).toBeGreaterThan(0);
+  });
+
+  test('customer registration creates a new customer profile', async () => {
+    const registration = await request(app)
+      .post('/api/v1/customers/register')
+      .set('Authorization', `Bearer ${token}`)
+      .send({
+        msisdn: '3331239840',
+        firstName: 'Nina',
+        lastName: 'Test',
+        email: 'nina.test@example.com',
+      });
+
+    expect(registration.status).toBe(201);
+    expect(registration.body.data.customerCode).toMatch(/^C\d{8}$/);
+    expect(registration.body.data.isVerified).toBe(false);
+
+    const duplicate = await request(app)
+      .post('/api/v1/customers/register')
+      .set('Authorization', `Bearer ${token}`)
+      .send({
+        msisdn: '3331239840',
+        firstName: 'Nina',
+        lastName: 'Test',
+      });
+
+    expect(duplicate.status).toBe(409);
+    expect(duplicate.body.error.code).toBe('DUPLICATE_RESOURCE');
+  });
+
+  test('bills can be filtered by issue date and payment status is read-only', async () => {
+    const bills = await request(app)
+      .get(`/api/v1/customers/${customerMsisdn}/bills?status=DUE`)
+      .set('Authorization', `Bearer ${token}`);
+
+    expect(bills.status).toBe(200);
+    expect(bills.body.data.items).toHaveLength(1);
+    const bill = bills.body.data.items[0];
+    expect(bill.issueDate).toMatch(/^2026-11-01/);
+    expect(bill.billNumber).toBe('B-1001-01');
+
+    const billsByDate = await request(app)
+      .get(`/api/v1/customers/${customerMsisdn}/bills/by-issue-date?issueDate=2026-11-01`)
+      .set('Authorization', `Bearer ${token}`);
+    expect(billsByDate.status).toBe(200);
+    expect(billsByDate.body.data.items.map((item) => item._id)).toContain(bill._id);
+
+    const unpaidStatus = await request(app)
+      .get(`/api/v1/payments/${bill.billNumber}/status`)
+      .set('Authorization', `Bearer ${token}`);
+    expect(unpaidStatus.status).toBe(200);
+    expect(unpaidStatus.body.data).toMatchObject({
+      billNumber: bill.billNumber,
+      status: 'DUE',
+      paymentSuccessful: false,
+    });
+    expect((await Bill.findById(bill._id).lean()).status).toBe('DUE');
+
+    await Bill.findByIdAndUpdate(bill._id, { status: 'PAID' });
+    const paidStatus = await request(app)
+      .get(`/api/v1/payments/${bill.billNumber}/status`)
+      .set('Authorization', `Bearer ${token}`);
+    expect(paidStatus.status).toBe(200);
+    expect(paidStatus.body.data.paymentSuccessful).toBe(true);
+
+    const invalidBillId = await request(app)
+      .get('/api/v1/payments/not-an-id/status')
+      .set('Authorization', `Bearer ${token}`);
+    expect(invalidBillId.status).toBe(400);
+
+    const issueDateOnNormalList = await request(app)
+      .get(`/api/v1/customers/${customerMsisdn}/bills?issueDate=2026-11-01`)
+      .set('Authorization', `Bearer ${token}`);
+    expect(issueDateOnNormalList.status).toBe(400);
+    expect(issueDateOnNormalList.body.error.code).toBe('VALIDATION_ERROR');
+
+    const invalidDate = await request(app)
+      .get(`/api/v1/customers/${customerMsisdn}/bills/by-issue-date?issueDate=2026-02-30`)
+      .set('Authorization', `Bearer ${token}`);
+    expect(invalidDate.status).toBe(400);
+    expect(invalidDate.body.error.code).toBe('VALIDATION_ERROR');
+
+    const missingIssueDate = await request(app)
+      .get(`/api/v1/customers/${customerMsisdn}/bills/by-issue-date`)
+      .set('Authorization', `Bearer ${token}`);
+    expect(missingIssueDate.status).toBe(400);
   });
 
   test('IVR context is returned for the ANI lookup', async () => {

@@ -2,14 +2,19 @@ const express = require('express');
 const validate = require('../middleware/validate');
 const asyncHandler = require('../utils/asyncHandler');
 const apiResponse = require('../utils/apiResponse');
-const { paymentLinkSchema, autopaySchema } = require('../validators/billingValidator');
-const { createPaymentLink, setAutopay, getAutopay } = require('../services/billingService');
+const { paymentLinkSchema, paymentStatusParamsSchema, autopaySchema } = require('../validators/billingValidator');
+const { createPaymentLink, getPaymentStatus, setAutopay, getAutopay } = require('../services/billingService');
 const resolveCustomerByMsisdn = require('../middleware/resolveCustomerByMsisdn');
 
 const router = express.Router();
 
 router.post('/payments/link', validate(paymentLinkSchema), asyncHandler(async (req, res) => {
   const result = await createPaymentLink(req.body.billId);
+  return apiResponse(res, 200, result, req.requestId);
+}));
+
+router.get('/payments/:billNumber/status', validate(paymentStatusParamsSchema, 'params'), asyncHandler(async (req, res) => {
+  const result = await getPaymentStatus(req.params.billNumber);
   return apiResponse(res, 200, result, req.requestId);
 }));
 

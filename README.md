@@ -85,6 +85,8 @@ Authorization: Bearer <token>
 - GET /api/v1/customers/3331239821/usage
 - GET /api/v1/customers/3331239821/billing/latest
 - GET /api/v1/customers/3331239821/bills
+- GET /api/v1/customers/3331239821/bills/by-issue-date?issueDate=2026-11-01
+- GET /api/v1/payments/B-1001-01/status
 - GET /api/v1/customers/3331239821/360
 - GET /api/v1/customers/3331239821/offers
 - GET /api/v1/customers/3331239821/next-best-action

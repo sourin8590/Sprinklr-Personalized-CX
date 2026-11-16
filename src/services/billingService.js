@@ -25,6 +25,17 @@ async function createPaymentLink(billId) {
   return paymentLink;
 }
 
+async function getPaymentStatus(billNumber) {
+  const bill = await Bill.findOne({ billNumber }).lean();
+  if (!bill) throw new AppError(404, 'NOT_FOUND', 'Bill not found');
+
+  return {
+    billNumber: bill.billNumber,
+    status: bill.status,
+    paymentSuccessful: bill.status === 'PAID',
+  };
+}
+
 async function setAutopay(customerId, enabled) {
   const setting = await AutopaySetting.findOneAndUpdate(
     { customer: customerId },
@@ -48,4 +59,4 @@ async function getAutopay(customerId) {
   return setting;
 }
 
-module.exports = { createPaymentLink, setAutopay, getAutopay };
+module.exports = { createPaymentLink, getPaymentStatus, setAutopay, getAutopay };

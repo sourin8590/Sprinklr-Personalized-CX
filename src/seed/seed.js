@@ -120,6 +120,7 @@ async function seed() {
   }
 
   const dueBill = await Bill.create({
+    billNumber: 'B-1001-01',
     customer: customer._id,
     amount: 34.9,
     currency: 'EUR',
@@ -129,10 +130,10 @@ async function seed() {
   });
 
   await Bill.insertMany([
-    { customer: allCustomers[1]._id, amount: 48.2, currency: 'EUR', issueDate: new Date(), dueDate: new Date(Date.now() - 86400000), status: 'OVERDUE' },
-    { customer: allCustomers[2]._id, amount: 12.3, currency: 'EUR', issueDate: new Date(), dueDate: new Date(Date.now() + 86400000), status: 'DUE' },
-    { customer: allCustomers[3]._id, amount: 59.4, currency: 'EUR', issueDate: new Date(), dueDate: new Date(Date.now() - 86400000), status: 'OVERDUE' },
-    { customer: allCustomers[4]._id, amount: 21.1, currency: 'EUR', issueDate: new Date(), dueDate: new Date(Date.now() + 86400000), status: 'DUE' },
+    { billNumber: 'B-1002-01', customer: allCustomers[1]._id, amount: 48.2, currency: 'EUR', issueDate: new Date(), dueDate: new Date(Date.now() - 86400000), status: 'OVERDUE' },
+    { billNumber: 'B-1003-01', customer: allCustomers[2]._id, amount: 12.3, currency: 'EUR', issueDate: new Date(), dueDate: new Date(Date.now() + 86400000), status: 'DUE' },
+    { billNumber: 'B-1004-01', customer: allCustomers[3]._id, amount: 59.4, currency: 'EUR', issueDate: new Date(), dueDate: new Date(Date.now() - 86400000), status: 'OVERDUE' },
+    { billNumber: 'B-1005-01', customer: allCustomers[4]._id, amount: 21.1, currency: 'EUR', issueDate: new Date(), dueDate: new Date(Date.now() + 86400000), status: 'DUE' },
   ]);
 
   await PaymentLink.create({ bill: dueBill._id, url: 'https://pay.windtre.it/link/123', expiresAt: new Date(Date.now() + 86400000), status: 'ACTIVE' });

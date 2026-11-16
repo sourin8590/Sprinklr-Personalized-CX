@@ -118,6 +118,35 @@
           }
         },
         {
+          "name": "Register customer",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"msisdn\": \"3331239832\",\n  \"firstName\": \"New\",\n  \"lastName\": \"Customer\",\n  \"email\": \"new.customer@example.com\",\n  \"tier\": \"STANDARD\",\n  \"language\": \"it\"\n}"
+            },
+            "url": {
+              "raw": "https://sprinklr-personalized-cx.vercel.app/api/v1/customers/register",
+              "protocol": "https",
+              "host": [
+                "sprinklr-personalized-cx",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "customers",
+                "register"
+              ]
+            }
+          }
+        },
+        {
           "name": "Get customer profile",
           "request": {
             "method": "GET",
@@ -244,6 +273,38 @@
                 {
                   "key": "status",
                   "value": "DUE"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "List customer bills by issue date",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "https://sprinklr-personalized-cx.vercel.app/api/v1/customers/{{msisdn}}/bills/by-issue-date?issueDate=2026-11-01",
+              "protocol": "https",
+              "host": [
+                "sprinklr-personalized-cx",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "customers",
+                "{{msisdn}}",
+                "bills",
+                "by-issue-date"
+              ],
+              "query": [
+                {
+                  "key": "issueDate",
+                  "value": "2026-11-01"
                 }
               ]
             }
@@ -385,6 +446,31 @@
                 "v1",
                 "payments",
                 "link"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Check payment status",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "https://sprinklr-personalized-cx.vercel.app/api/v1/payments/{{billNumber}}/status",
+              "protocol": "https",
+              "host": [
+                "sprinklr-personalized-cx",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "payments",
+                "{{billNumber}}",
+                "status"
               ]
             }
           }
