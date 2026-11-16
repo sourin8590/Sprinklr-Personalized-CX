@@ -181,6 +181,16 @@ describe('Windtre mock backend', () => {
     expect(response.body.data.toPlan).toBe('5G_MAX');
   });
 
+  test('plan change succeeds without the optional idempotency key', async () => {
+    const response = await request(app)
+      .post('/api/v1/customers/3331239830/plan-change')
+      .set('Authorization', `Bearer ${token}`)
+      .send({ targetPlanCode: 'FAMILY_5G', consent: true, channel: 'IVR' });
+
+    expect(response.status).toBe(200);
+    expect(response.body.data.toPlan).toBe('FAMILY_5G');
+  });
+
   test('plan change rejects when consent is missing', async () => {
     const response = await request(app)
       .post(`/api/v1/customers/${customerMsisdn}/plan-change`)

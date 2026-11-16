@@ -214,12 +214,14 @@ async function changePlan(customerId, targetPlanCode, consent, channel, idempote
   subscription.plan = targetPlan._id;
   await subscription.save();
 
-  await require('../models/IdempotencyKey').create({
-    key: idempotencyKey,
-    responseBody: { success: true, data: { planChangeId: planChange._id, toPlan: targetPlan.code }, requestId: 'idempotent' },
-    statusCode: 200,
-    data: { planChangeId: planChange._id },
-  });
+  if (idempotencyKey) {
+    await require('../models/IdempotencyKey').create({
+      key: idempotencyKey,
+      responseBody: { success: true, data: { planChangeId: planChange._id, toPlan: targetPlan.code }, requestId: 'idempotent' },
+      statusCode: 200,
+      data: { planChangeId: planChange._id },
+    });
+  }
 
   await writeAuditLog({
     action: 'PLAN_CHANGED',
